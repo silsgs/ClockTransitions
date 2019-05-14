@@ -122,7 +122,7 @@ c
       endif
 c
       close(3)
- 320  format(f16.8,1000f16.6)
+ 320  format(f16.8,1000f16.7)
  321  format('     Magnetic Field (T) =',f9.5)
 c
       stop
