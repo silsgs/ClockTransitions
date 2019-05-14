@@ -4,19 +4,19 @@ c
 c
       PARAMETER (icoo = 1) ! spherical coordinates=1, cartesian coordinates=2
       PARAMETER (ichar = 999) ! maximum number of charges
-      PARAMETER (iparead = 0) ! if BKQ calculated then 0, if read then 1
+      PARAMETER (iparead = 1) ! if BKQ calculated then 0, if read then 1
       PARAMETER (istevens = 1) ! if Wybourne then 0, if Stevens B then 1, if Stevens A then 2
 c
-      PARAMETER (ahfxy =0.0042D0) ! perpendicular Hyperfine Coupling (cm-1)
-      PARAMETER (ahfz  =0.0000D0) ! parallel Hyperfine Coupling (cm-1)
+      PARAMETER (ahfxy =0.0000D0) ! perpendicular Hyperfine Coupling (cm-1)
+      PARAMETER (ahfz  =0.0277D0) ! parallel Hyperfine Coupling (cm-1)
       PARAMETER (aquad = 0.00000D0) ! quadrupolar Coupling (cm-1)
 c
       PARAMETER (ishi = 1) ! use of Sternheimer shielding parameters [1(yes)/0(no)]
 c
       PARAMETER (ivar = 1) ! [1(on)/0(off)] variable magnetic field
-      PARAMETER (fieldstart =-0.101D0) ! minimum intensity of the magnetic field (T)
-      PARAMETER (fieldend =-0.021D0) ! maximum intensity of the magnetic field (T)
-      PARAMETER (fieldstep = 0.0100D0) ! magnetic field increase at each step (T)
+      PARAMETER (fieldstart =-0.40101D0) ! minimum intensity of the magnetic field (T)
+      PARAMETER (fieldend = 0.40101D0) ! maximum intensity of the magnetic field (T)
+      PARAMETER (fieldstep = 0.0010D0) ! magnetic field increase at each step (T)
       PARAMETER (imaxe = 26) ! print the first imaxe energy levels vs magnetic field (the limit is idtot)
 c
 c----------------------------OUTPUT-------------------------------------------------------
