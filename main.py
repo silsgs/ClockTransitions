@@ -198,7 +198,9 @@ for i1 in range(dim[0]-1):
 half_minAE = minAE/2
 
 
-# In[]:
+
+# In[7]:
+
 #
 ##
 ### Main loop
@@ -243,9 +245,14 @@ for i0 in range(dim[1]):
         
         # Rellenar lista E
         #numero de columna de ene_df correspondiente al nivel i0 para el campo H i1
-        pos = int(order_df.iloc[i1, i0])
-        five_E.append(ene_df.iloc[i1, pos-1])
-       
+        pos = order_df.iloc[i1, i0]
+        if pos == 'nan':
+            five_E.append(float(expected_df.iloc[i1, i0]))
+        
+        else:
+            pos = int(pos)
+            five_E.append(ene_df.iloc[i1, pos-1])
+           
         
         
         # Everything starts now......
@@ -288,23 +295,54 @@ for i0 in range(dim[1]):
                 order_df.iloc[i1+1, i0] = int(num[0])+1
             else:
                 print 'ninguno coincide'
+                order_df.iloc[i1+1, i0] = 'nan'#int(num[0])+1
+                
                 pass
-                
-        #       print 'isnull'
-        #       five_E.append(v0)
-        #       print five_E
-
-
-                
-
+            
             five_E.pop(0)
             five_H.pop(0)
     
     poli_out.write('\n')
 
-order_df.to_csv(path + 'order.txt', header = lvls_list, sep=' ', na_rep='na')
-expected_df.to_csv(path + 'expected.txt', header = lvls_list, sep=' ', na_rep='na')
+
+# Write outputs
+order_df.to_csv(path + 'order.txt', header = lvls_list, sep='\t', na_rep='na')
+expected_df.to_csv(path + 'expected.txt', header = lvls_list, sep='\t', na_rep='na')
 poli_out.close()
+
+#
+##
+### Obtain final_df
+##
+#
+ene_df = np.array(ene_df)
+order_df = np.array(order_df)
+
+dims = ene_df.shape
+tsize = dims[0]*dims[1]
+
+
+#Recreate the ene_df array using the labels from order_df as a mask
+
+df_final = np.arange(tsize).reshape(dims[0], dims[1])
+df_final = np.array(df_final, dtype='float32')
+
+for i in range(dims[0]): # valores de H
+    for j in range(dims[1]): # niveles
+        i = int(i)
+        j = int(j)
+        
+        if order_df[i,j] == 'nan':
+            final_df.iloc[i,j] = ene_df[i,j]
+        else:
+            col = int(order_df[i,j])
+            final_df.iloc[i,j] = ene_df[i,col-1] 
+        
+
+# Writing outputs
+final_df.to_csv(path + 'final.txt', header = lvls_list, sep='\t', na_rep='na', float_format='%.7f' )
+
+
     
 
 # In[]:

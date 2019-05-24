@@ -59,7 +59,7 @@ plt.show()
 
 # Evaluate expected values
 
-#plt.plot(expected_df.index, expected_df.iloc[:,1:])
+plt.plot(expected_df.index, expected_df.iloc[:,1:])
 #plt.plot(expected_df.index, expected_df.iloc[:,[8,9,10,]])
 #plt.plot(expected_df.index, expected_df.iloc[:,[1,2,3,4,5,6,7]])
 #plt.savefig('plot_prev.png', dpi = 300)
@@ -70,6 +70,9 @@ plt.show()
 
 
 
+# In[]:
+plt.plot(enenew_df[:,0], enenew_df[:,0:])
+plt.show()
 
 
 # In[4]:
@@ -267,9 +270,14 @@ for i0 in range(dim[1]):
         
         # Rellenar lista E
         #numero de columna de ene_df correspondiente al nivel i0 para el campo H i1
-        pos = int(order_df.iloc[i1, i0])
-        five_E.append(ene_df.iloc[i1, pos-1])
-       
+        pos = order_df.iloc[i1, i0]
+        if pos == 'nan':
+            five_E.append(float(expected_df.iloc[i1, i0]))
+        
+        else:
+            pos = int(pos)
+            five_E.append(ene_df.iloc[i1, pos-1])
+           
         
         
         # Everything starts now......
@@ -312,36 +320,59 @@ for i0 in range(dim[1]):
                 order_df.iloc[i1+1, i0] = int(num[0])+1
             else:
                 print 'ninguno coincide'
+                order_df.iloc[i1+1, i0] = 'nan'#int(num[0])+1
+                
                 pass
-                
-        #       print 'isnull'
-        #       five_E.append(v0)
-        #       print five_E
-
-                
-
+            
             five_E.pop(0)
             five_H.pop(0)
     
     poli_out.write('\n')
 
-order_df.to_csv(path + 'order.txt', header = lvls_list, sep=' ', na_rep='na')
-expected_df.to_csv(path + 'expected.txt', header = lvls_list, sep=' ', na_rep='na')
+
+# Write outputs
+order_df.to_csv(path + 'order.txt', header = lvls_list, sep='\t', na_rep='na')
+expected_df.to_csv(path + 'expected.txt', header = lvls_list, sep='\t', na_rep='na')
 poli_out.close()
-    
+
+#
+##
+### Obtain final_df
+##
+#
+ene_df = np.array(ene_df)
+order_df = np.array(order_df)
+
+dims = ene_df.shape
+tsize = dims[0]*dims[1]
 
 
-## Condition 1 : compare pends (k1)
-   
-## Condition 2 : compare second derivative (k2)
-    
-## Condition 3 : allowed/non-allowed transitions (+/- 1) 
+#Recreate the ene_df array using the labels from order_df as a mask
+
+df_final = np.arange(tsize).reshape(dims[0], dims[1])
+df_final = np.array(df_final, dtype='float32')
+
+for i in range(dims[0]): # valores de H
+    for j in range(dims[1]): # niveles
+        i = int(i)
+        j = int(j)
+        
+        if order_df[i,j] == 'nan':
+            final_df.iloc[i,j] = ene_df[i,j]
+        else:
+            col = int(order_df[i,j])
+            final_df.iloc[i,j] = ene_df[i,col-1] 
+        
+
+# Writing outputs
+final_df.to_csv(path + 'final.txt', header = lvls_list, sep='\t', na_rep='na', float_format='%.7f' )
 
 
 # In[]:
-
 #
-## Read poli.txt file
+##
+### Read poli.txt file
+##
 #
 
 # Opens and reads
@@ -370,7 +401,6 @@ for i1 in range(len(indexes)):
     name_lvl = 'lvl_' + str(index_lvl)
     
     cont = extract_poly(i1, indexes, poly_cont)
-    
     
     for i2 in range(len(cont)):
         H_value = H_values[i2+4]
@@ -453,37 +483,6 @@ for i in range(dim[0]):
 
 
 # In[14]:
-
-
-#print order_df
-
-ene_df = np.array(ene_df)
-order_df = np.array(order_df)
-
-dims = ene_df.shape
-print dims
-tsize = dims[0]*dims[1]
-
-
-#Recreate the ene_df array using the labels from order_df as a mask
-
-df_final = np.arange(tsize).reshape(dims[0], dims[1])
-df_final = np.array(df_final, dtype='float32')
-
-for i in range(dims[0]):
-    for j in range(dims[1]):
-        label = int(order_df[i,j])
-        i = int(i)
-        j = int(j)
-        if label == j+1:
-            df_final[i,j] = ene_df[i,j]
-        else:
-            df_final[i,j] = ene_df[i,label-1] 
-        
-
-df_final = pd.DataFrame(df_final)
-df_final.to_csv(path + 'final.txt', header = lvls_list, sep='\t', na_rep='na')
-
 
 
 
