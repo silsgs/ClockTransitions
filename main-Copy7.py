@@ -53,7 +53,21 @@ plt.plot(ene[:,0], ene[:,1:])
 print 'n. of points: ' + str(len(ene))
 plt.show()
 
+# In[12]:
 
+
+final_f = path + "final.txt"
+
+fin = np.loadtxt(final_f, dtype= float)
+
+#plt.plot(ene[:,0], ene[:,[1,2,3,4,5,6,7,8, 9,10,11,12,13,14]])
+#plt.plot(ene[:,0], ene[:,[17, 18,19,20, 21, 22, 23, 24,25,26]])#, 9,10, 11, 12, 13, 14, 15, 16]])
+plt.plot(fin[:,0], fin[:,1:])
+
+#plt.savefig('plot_ene.png', dpi = 300)
+
+print 'n. of points: ' + str(len(ene))
+plt.show()
 # In[15]:
 
 
@@ -67,12 +81,6 @@ plt.plot(expected_df.index, expected_df.iloc[:,1:])
 #print 'n. of points: ' + str(len(ene_prev))
 plt.show()
 #print expected_df
-
-
-
-# In[]:
-plt.plot(enenew_df[:,0], enenew_df[:,0:])
-plt.show()
 
 
 # In[4]:
@@ -211,16 +219,16 @@ def search(v0, v1, v2, list_e): #index = pos-1
 
 
 
-def extract_poly(lvl_index, indexes, poly_cont):
-    if lvl_index +1 == len(indexes):
-        starting_line = int(indexes[lvl_index]) + 1
+def extract_poly(i1, indexes, poly_cont):
+    if int(i1)+1 == len(indexes):
+        starting_line = int(indexes[i1]) + 1
         data = poly_cont[starting_line:-1]
         return data
         
         
     else:
-        starting_line = int(indexes[lvl_index]) + 1
-        end_line = int(indexes[lvl_index + 1]) -1
+        starting_line = int(indexes[i1]) + 1
+        end_line = int(indexes[i1 + 1]) -1
         data = poly_cont[starting_line:end_line]
         return data
 
@@ -293,7 +301,7 @@ for i0 in range(dim[1]):
             vec_poly = poly(five_H, five_E)
             p = np.poly1d(vec_poly)
             d_poli[i1] = p
-            poli_out.write('H: ' + str(H_value) + ' ' + str(vec_poly) +'\n') # Last H value of the poly
+            poli_out.write('H: ' + str(H_value) + ' ' + str(vec_poly) +'\n')
             
             
             # Calculates expected_v
@@ -340,14 +348,14 @@ poli_out.close()
 ### Obtain final_df
 ##
 #
-ene_df = np.array(ene_df)
+newene_df = np.array(ene_df)
 order_df = np.array(order_df)
 
 dims = ene_df.shape
 tsize = dims[0]*dims[1]
 
 
-#Recreate the ene_df array using the labels from order_df as a mask
+#Create the final_df array using the labels from order_df as a mask over ene_df
 
 df_final = np.arange(tsize).reshape(dims[0], dims[1])
 df_final = np.array(df_final, dtype='float32')
@@ -358,10 +366,10 @@ for i in range(dims[0]): # valores de H
         j = int(j)
         
         if order_df[i,j] == 'nan':
-            final_df.iloc[i,j] = ene_df[i,j]
+            final_df.iloc[i,j] = newene_df[i,j]
         else:
             col = int(order_df[i,j])
-            final_df.iloc[i,j] = ene_df[i,col-1] 
+            final_df.iloc[i,j] = newene_df[i,col-1] 
         
 
 # Writing outputs
@@ -378,6 +386,7 @@ final_df.to_csv(path + 'final.txt', header = lvls_list, sep='\t', na_rep='na', f
 # Opens and reads
 in_f = open(path + 'poli.out', 'r')
 poly_cont = in_f.read().split('\n')
+in_f.close()
 
 
 # Extracts number of the starting line of each level in ene file 
@@ -405,90 +414,91 @@ for i1 in range(len(indexes)):
     for i2 in range(len(cont)):
         H_value = H_values[i2+4]
         
+        
         vec = cont[i2].strip(']').split('[')
-        
-        H_vec = vec[0].split()
-        H = float(H_vec[1])
-        
-        coef_vec = vec[1].split()
-        k0 = coef_vec[2]
-        k1 = coef_vec[1]
-        k2 = coef_vec[0]
-        
-        dic[name_lvl][H] = [k0, k1, k2] 
+        if len(vec) > 1:
+            H_vec = vec[0].split()
+            H = float(H_vec[1])
+            
+            coef_vec = vec[1].split()
+            k0 = coef_vec[2]
+            k1 = coef_vec[1]
+            k2 = coef_vec[0]
+            
+            dic[name_lvl][H] = [k0, k1, k2] 
+            
+        else:
+            continue
+
     
 # In[]:
 #
 ## Define variables
 #
-thrs_AE = float(2)
-#thrs = float((raw_input('Valor max AE (thrs): '))
+thrs_AE = float(0.5)
+#thrs = float((raw_input('Valor max AE (thrs_AE): '))
 
-thrs_k1 = float(0.001)
-#thrs_k1 = float((raw_input('Valor max d(k1) (thrs): '))
+thrs_k1 = float(0.01)
+#thrs_k1 = float((raw_input('Valor max d(k1) (thrs_Ak1): '))
 
-
+out_f = open('transitions_sum.txt', 'w')
 
 #
-## Main loop
+##
+### Main loop
+##
 #
-
-
 
 H_s = H_values.astype(str)
-
+dic_2 = { H: { i:[] for i in lvls_list } for H in H_values }
 
 for i in range(dim[0]):
-    sEs = ene_df.iloc[i+4]
-    H_value = H_values[i+4]
-    H_prev = H_values[i+3]
-    H_next = H_values[i+5]
     
-    for a,b in combinations(sEs,2):
-        AE = abs(a-b)
+    if i+4 >= dim[0]-1:
+        break    
+    
+    else:
+        sEs = final_df.iloc[i+4]
+        H_value = H_values[i+4]
+        H_prev = H_values[i+3]
         
-        if AE <= thrs_AE:
-            #print 'niveles buenos'
-            index_a = sEs[sEs == a].index + 1
-            index_b = sEs[sEs == b].index + 1
+        out_f.write('Field value: ' + str(H_value) + '\n')
+        
+        for a,b in combinations(sEs,2):
+            AE = abs(a-b)
             
-            if index_a > len(indexes):
-                continue
+            if AE <= thrs_AE:
                 
-            elif index_b > len(indexes):
-                continue
+                #print 'niveles buenos'
+                index_a = sEs[sEs == a].index[0]
+                index_b = sEs[sEs == b].index[0]
             
-            else:
                 # Save levels somewhere, to then evaluate change in signs
+                k1_a = float(dic[index_a][H_value][1])
+                k1_b = float(dic[index_b][H_value][1])
                 
-                ind_a = ('lvl_' + index_a.astype(str)).tolist()
-                ind_b = ('lvl_' + index_b.astype(str)).tolist()
-                
-                print index_a, index_b
-                
-                k1_a = float(dic[ind_a[0]][H_value][1])
-                k1_b = float(dic[ind_b[0]][H_value][1])
+                # Pend difference
                 Ak1 = abs(k1_a - k1_b)
+                print 'Aqui AE'
+                print AE, index_a, index_b, Ak1
                 
                 if Ak1 <= thrs_k1:
-                    print 'comparemos signs'
-                    # Compare signs of k1 
+                    # Compare signs of k1
+                    print 'Aqui Ak1'
+                    print H_value,index_a, k1_a, index_b, k1_b, Ak1
                     
-                
+                    dic_2[H_value][index_a].append(index_b)
+                    out_f.write(str(index_a) +'     ' + str(index_b)+'     AE: ' + str(AE)+'     Ak1: ' + str(Ak1) + '\n')
                     continue
-            
- 
-    
 
-
-
-# In[14]:
-
+out_f.close()
 
 
 # In[ ]:
-
-
+#################
+#    OLD
+#################
+                    
 #
 ##
 ### Functions
