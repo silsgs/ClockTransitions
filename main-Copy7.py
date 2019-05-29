@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# NEW APPROACH
-
 # #### Pre analysis step!
 # 
 # -- hiperfino = 0 
@@ -171,8 +169,7 @@ half_minAE = minAE/2
 #
 
 def poly(five_H, five_E): #dataset with set of points: would retrieve 
-    #print five_E
-    #print five_H
+
     x = five_H # set campos H (5)
     y = five_E # set valores E (5)
         
@@ -232,6 +229,14 @@ def extract_poly(i1, indexes, poly_cont):
         data = poly_cont[starting_line:end_line]
         return data
 
+
+
+def first_d(k1,k2,H):
+    k1 = float(k1)
+    k2 = float(k2)
+    H = float(H)
+    x = k1 + 2*k2*H
+    return x
 # In[7]:
 
 #
@@ -253,7 +258,7 @@ for i0 in range(dim[1]):
     five_E = []
     d_poli = {}
     
-    poli_out.write(lvls_list[i0] + '\n' )
+    poli_out.write(lvls_list[i0] + '  k2 k1 k0\n' )
     
     
     for i1 in range(dim[0]):
@@ -301,7 +306,9 @@ for i0 in range(dim[1]):
             vec_poly = poly(five_H, five_E)
             p = np.poly1d(vec_poly)
             d_poli[i1] = p
-            poli_out.write('H: ' + str(H_value) + ' ' + str(vec_poly) +'\n')
+            vec = ['{:.7f}'.format(i) for i in vec_poly]
+            poli_out.write('H: ' + str(H_value) + ' ' + vec[0] + ' ' + vec[1] + ' ' + vec[2] +'\n')
+            #poli_out.write('H: ' + str(H_value) + ' ' + str(vec_poly) +'\n')
             
             
             # Calculates expected_v
@@ -415,15 +422,13 @@ for i1 in range(len(indexes)):
         H_value = H_values[i2+4]
         
         
-        vec = cont[i2].strip(']').split('[')
+        vec = cont[i2].split()
         if len(vec) > 1:
-            H_vec = vec[0].split()
-            H = float(H_vec[1])
+            H = float(vec[1])
             
-            coef_vec = vec[1].split()
-            k0 = coef_vec[2]
-            k1 = coef_vec[1]
-            k2 = coef_vec[0]
+            k0 = float(vec[4])
+            k1 = float(vec[3])
+            k2 = float(vec[2])
             
             dic[name_lvl][H] = [k0, k1, k2] 
             
@@ -438,8 +443,8 @@ for i1 in range(len(indexes)):
 thrs_AE = float(0.5)
 #thrs = float((raw_input('Valor max AE (thrs_AE): '))
 
-thrs_k1 = float(0.01)
-#thrs_k1 = float((raw_input('Valor max d(k1) (thrs_Ak1): '))
+thrs_pend = float(0.1)
+#thrs_k1 = float((raw_input('Valor max d(pend) (thrs_pend): '))
 
 out_f = open('transitions_sum.txt', 'w')
 
@@ -460,36 +465,80 @@ for i in range(dim[0]):
     else:
         sEs = final_df.iloc[i+4]
         H_value = H_values[i+4]
-        H_prev = H_values[i+3]
+        H_middle = H_values[i+2]
         
-        out_f.write('Field value: ' + str(H_value) + '\n')
-        
-        for a,b in combinations(sEs,2):
-            AE = abs(a-b)
+        for a,b in combinations(sEs,2):  ### campo  middle
+            AE_abs = abs(a-b)
+            AE = a-b
             
-            if AE <= thrs_AE:
+            if AE_abs <= thrs_AE:
                 
-                #print 'niveles buenos'
+                #prints 'niveles buenos'
                 index_a = sEs[sEs == a].index[0]
                 index_b = sEs[sEs == b].index[0]
             
-                # Save levels somewhere, to then evaluate change in signs
+                # Saves levels somewhere, to then evaluate change in signs
                 k1_a = float(dic[index_a][H_value][1])
                 k1_b = float(dic[index_b][H_value][1])
+                k2_a = float(dic[index_a][H_value][2])
+                k2_b = float(dic[index_b][H_value][2])
                 
-                # Pend difference
-                Ak1 = abs(k1_a - k1_b)
-                print 'Aqui AE'
-                print AE, index_a, index_b, Ak1
+                # Calculates pend
+                pend_a = first_d(k1_a, k2_a, H_middle)
+                pend_b = first_d(k1_b, k2_b, H_middle)
+                print 'pend a' + str(pend_a)
+                print 'pend b' + str(pend_b)
                 
-                if Ak1 <= thrs_k1:
-                    # Compare signs of k1
-                    print 'Aqui Ak1'
-                    print H_value,index_a, k1_a, index_b, k1_b, Ak1
+                # Pend differences
+                Apend = abs(pend_a - pend_b)
+                div_pend = pend_a / pend_b
+                
+                Abs_pend = abs(pend_a) - abs(pend_b) 
+                
+                ####### Signos diferentes dividir pends; if div < 0 entra
+                               
+                if pend_a > 0:
+                    if pend_b < 0:
+                        print 'estos molan'
+                        if Apend <= thrs_pend:
+                            # Stores
+                            dic_2[H_value][index_a].append(index_b)
+                            
+                            # Writes
+                            H_middle = '{:.7f}'.format(H_middle)
+                            a = '{:.7f}'.format(a)
+                            b = '{:.7f}'.format(b)
+                            pend_a = '{:.7f}'.format(pend_a)
+                            pend_b = '{:.7f}'.format(pend_b)
+                            AE = '{:.7f}'.format(AE)
+                            Apend = '{:.7f}'.format(Apend)
                     
-                    dic_2[H_value][index_a].append(index_b)
-                    out_f.write(str(index_a) +'     ' + str(index_b)+'     AE: ' + str(AE)+'     Ak1: ' + str(Ak1) + '\n')
-                    continue
+                            out_f.write(H_middle + '     ' +  str(index_a) +'     ' +
+                                        str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                                        pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                                        '     ' + Apend + '\n') 
+                        
+                elif pend_a < 0:
+                    if pend_b > 0:
+                        print 'estos molan'
+                        if Apend <= thrs_pend:
+                            # Stores
+                            dic_2[H_value][index_a].append(index_b)
+                            
+                            # Writes
+                            H_middle = '{:.7f}'.format(H_middle)
+                            a = '{:.7f}'.format(a)
+                            b = '{:.7f}'.format(b)
+                            pend_a = '{:.7f}'.format(pend_a)
+                            pend_b = '{:.7f}'.format(pend_b)
+                            AE = '{:.7f}'.format(AE)
+                            Apend = '{:.7f}'.format(Apend)
+                            
+                            out_f.write(H_middle + '     ' +  str(index_a) +'     ' +
+                                        str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                                        pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                                        '     ' + Apend + '\n')
+                
 
 out_f.close()
 

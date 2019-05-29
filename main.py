@@ -12,20 +12,9 @@ from itertools import combinations
 
 path = os.getcwd() + '/'
 
-
-# # NEW APPROACH
-
-# #### Pre analysis step!
-# 
-# -- hiperfino = 0 
-# -- Chequear el buen control sobre niveles
-# 
-# #### First trials:
-# ~ Parallel and isotrope hyperfine
-# Polinomios de intervalos  5/3 puntos de H
-# 
-# 
-# # Flow
+# =============================================================================
+#                              FLOW
+# =============================================================================
 # 1. Run your simpre calculation and plot your results.
 # 2. Define a trainning data set region without non-avoided crossings
 #     - Minimum of 3-5 points (plot your results)
@@ -33,34 +22,20 @@ path = os.getcwd() + '/'
 # 4. Run expected_values.py
 # 5. Run main.py
 
-# In[2]:
 
+# In[2]:
 
 ene_f = path + "simpre.ene"
 
 ene = np.loadtxt(ene_f, dtype= float)
 
-plt.plot(ene[:,0], ene[:,[1,2,3,4,5,6,7,8]])
+plt.plot(ene[:,0], ene[:,1:])
+#plt.plot(ene[:,0], ene[:,[1,2,3,4,5,6,7,8]])
 #plt.plot(ene[:,0], ene[:,[17, 18,19,20, 21, 22, 23, 24,25,26]])#, 9,10, 11, 12, 13, 14, 15, 16]])
-#plt.plot(ene[:,0], ene[:,1:])
 #plt.savefig('plot_ene.png', dpi = 300)
 
 print 'n. of points: ' + str(len(ene))
 plt.show()
-
-
-# In[14]:
-
-# Evaluate expected values
-
-plt.plot(expected_df.index, expected_df.iloc[:,1:])
-#plt.plot(expected_df.index, expected_df.iloc[:,[8,9,10,]])
-#plt.plot(expected_df.index, expected_df.iloc[:,[16,17, 18,19,20,21,22,23,24,25]])
-#plt.savefig('plot_prev.png', dpi = 300)
-
-#print 'n. of points: ' + str(len(ene_prev))
-plt.show()
-print expected_df
 
 # In[15]
 
@@ -68,7 +43,8 @@ print expected_df
 ## Functions module
 #
 
-def poly(five_H, five_E): #dataset with set of points: would retrieve 
+def poly(five_H, five_E): 
+    '''Calculates the polynomia expression for a set of H and E'''
     x = five_H # set campos H (5)
     y = five_E # set valores E (5)
     vec_z = np.polyfit(x, y, deg = 2)
@@ -77,6 +53,7 @@ def poly(five_H, five_E): #dataset with set of points: would retrieve
 
 
 def expected_E(vec_z, H_v):
+    '''Retrieves the E value of a spin level at a given H'''
     k0 = vec_z[2]
     k1 = vec_z[1]
     k2 = vec_z[0]
@@ -96,9 +73,8 @@ def truncate(f, n):
 
 
 
-def search(v0, v1, v2, list_e): #index = pos-1
+def search(v0, v1, v2, list_e): 
     num = []
-    
     for i in range(len(list_e)):
         e0 = list_e[i]
         if e0 == 'u':
@@ -106,6 +82,7 @@ def search(v0, v1, v2, list_e): #index = pos-1
         
         e0 = round(float(e0), 7)
         diff = abs(abs(float(v0)) - abs(float(e0)))
+    
         if  diff < 10**-6:
             num.append(i)
         else:
