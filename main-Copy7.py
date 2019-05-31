@@ -34,6 +34,9 @@ from itertools import combinations
 
 path = os.getcwd() + '/'
 
+### subcarpeta pareja de nieveles
+## fichero unico 
+## campo + AE + pends + Apends + tipo de cruce + (ciente )
 
 # In[12]:
 
@@ -169,15 +172,15 @@ half_minAE = minAE/2
 #
 
 def poly(five_H, five_E): #dataset with set of points: would retrieve 
-
+    '''Calculates the polynomia expression for a set of H and E'''
     x = five_H # set campos H (5)
     y = five_E # set valores E (5)
-        
     vec_z = np.polyfit(x, y, deg = 2)
     return vec_z
 
 
 def expected_E(vec_z, H_v):
+    '''Retrieves the E value of a spin level at a given H'''
     k0 = vec_z[2]
     k1 = vec_z[1]
     k2 = vec_z[0]
@@ -194,7 +197,6 @@ def truncate(f, n):
         return '{0:.{1}f}'.format(f, n)
     i, p, d = s.partition('.')
     return '.'.join([i, (d+'0'*n)[:n]])
-
 
 
 
@@ -220,9 +222,7 @@ def extract_poly(i1, indexes, poly_cont):
     if int(i1)+1 == len(indexes):
         starting_line = int(indexes[i1]) + 1
         data = poly_cont[starting_line:-1]
-        return data
-        
-        
+        return data        
     else:
         starting_line = int(indexes[i1]) + 1
         end_line = int(indexes[i1 + 1]) -1
@@ -237,6 +237,143 @@ def first_d(k1,k2,H):
     H = float(H)
     x = k1 + 2*k2*H
     return x
+
+
+
+def classify_crss(H_middle, a, b, index_a, index_b, pend_a, pend_b,AE, Apend, Abs_pend, out_f1, out_f2, thrs_AE, f_comb):
+    '''Classifies the type of crossing (avoided, non-avoided) based on pends'''
+    f_comb = open(f_comb, 'a')
+    
+    thrs_AE2 = float(thrs_AE)/100
+    
+    if Abs_pend <= thrs_pend:
+        if pend_a/pend_b < 0 :
+            if pend_a > 0:
+                if pend_b < 0:
+                    if Apend <= thrs_pend:
+                        
+                        # Writes
+                        H_middle = '{:.7f}'.format(H_middle)
+                        a = '{:.7f}'.format(a)
+                        b = '{:.7f}'.format(b)
+                        pend_a = '{:.7f}'.format(pend_a)
+                        pend_b = '{:.7f}'.format(pend_b)
+                        AE = '{:.7f}'.format(AE)
+                        Apend = '{:.7f}'.format(Apend)
+                        Abs_pend = '{:.7f}'.format(Abs_pend)
+                
+                        f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
+                                    pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+                        
+                        out_f1.write(H_middle + '     ' +  str(index_a) +'     ' +
+                                    str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                                    pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                                    '     ' + Apend + '\n')
+                
+                    
+                    elif Apend > 1:
+                        if AE <= thrs_AE2:
+                            
+                            # Writes
+                            H_middle = '{:.7f}'.format(H_middle)
+                            a = '{:.7f}'.format(a)
+                            b = '{:.7f}'.format(b)
+                            pend_a = '{:.7f}'.format(pend_a)
+                            pend_b = '{:.7f}'.format(pend_b)
+                            AE = '{:.7f}'.format(AE)
+                            Apend = '{:.7f}'.format(Apend)
+                            Abs_pend = '{:.7f}'.format(Abs_pend)
+                    
+                            out_f2.write(H_middle + '     ' +  str(index_a) +'     ' +
+                                        str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                                        pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                                        '     ' + Apend + '\n') 
+                            f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
+                                    pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+            
+            elif pend_a < 0:
+                if pend_b > 0:
+                   if Apend <= thrs_pend:
+                       
+                        # Writes
+                        H_middle = '{:.7f}'.format(H_middle)
+                        a = '{:.7f}'.format(a)
+                        b = '{:.7f}'.format(b)
+                        pend_a = '{:.7f}'.format(pend_a)
+                        pend_b = '{:.7f}'.format(pend_b)
+                        AE = '{:.7f}'.format(AE)
+                        Apend = '{:.7f}'.format(Apend)
+                        Abs_pend = '{:.7f}'.format(Abs_pend)
+                
+                        out_f1.write(H_middle + '     ' +  str(index_a) +'     ' +
+                                    str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                                    pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                                    '     ' + Apend + '\n')
+                        f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
+                                    pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+                
+                    
+                   elif Apend > 1:
+                         if AE <= thrs_AE2:
+                            
+                            # Writes
+                            H_middle = '{:.7f}'.format(H_middle)
+                            a = '{:.7f}'.format(a)
+                            b = '{:.7f}'.format(b)
+                            pend_a = '{:.7f}'.format(pend_a)
+                            pend_b = '{:.7f}'.format(pend_b)
+                            AE = '{:.7f}'.format(AE)
+                            Apend = '{:.7f}'.format(Apend)
+                            Abs_pend = '{:.7f}'.format(Abs_pend)
+                    
+                            out_f2.write(H_middle + '     ' +  str(index_a) +'     ' +
+                                        str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                                        pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                                        '     ' + Apend + '\n') 
+                            f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
+                                    pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+        elif pend_a/pend_b > 0:
+            print 'exotic crosses'
+
+    f_comb.close()
+
+
+def limits_avoided(k1_a, k1_b, k2_a, k2_b):
+    '''Calculates first derivative of an avoided crossing'''
+    H1 = -k1_a/2*k2_a
+    H2 = -k1_b/2*k2_b
+    if H1 > H2:
+        Hmin = H2
+        Hmax = H1
+        return Hmin, Hmax
+    elif H1 < H2:
+        Hmin = H1
+        Hmax = H2
+    
+
+def limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b):
+    '''Calculates crossing H value of a non-avoided crossing'''
+    a = float(k2_a - k2_b)
+    b = float(k1_a - k1_b)
+    c = float(k0_a - k0_b)
+     
+    if a != 0:
+        x1 = (-b + sqrt(b**2 - 4*a*c)) / (2 * a)
+        x2 = (-b - sqrt(b**2 - 4*a*c)) / (2 * a)
+        print 'Soluciones de la ecuacion: x1=%4.3f y x2=%4.3f ' % (x1, x2)
+    else:
+        if b != 0:
+           x = -c / b
+           print 'Solucion de la ecuacion: x=%4.3f ' % x
+     
+        else:
+           if c != 0:
+              print 'La ecuacion no tiene solucion. '
+     
+           else:
+              print 'La ecuacion tiene infinitas soluciones. '
+
+               
 # In[7]:
 
 #
@@ -447,7 +584,21 @@ thrs_pend = float(0.1)
 #thrs_k1 = float((raw_input('Valor max d(pend) (thrs_pend): '))
 
 out_f = open('transitions_sum.txt', 'w')
+out_avoid = open('avoided_sum.txt', 'w')
+out_nonavoid = open('nonavoided_sum.txt', 'w')
 
+# Check if subdir_path exists and if its empty
+subdir_path = path + 'combinations/'
+if not os.path.exists(subdir_path):
+    os.makedirs(subdir_path)
+
+"""  # need to remove files before script, or will add in case it already exists!!!!!!
+else:
+    ldir = os.listdir(subdir_path)
+    if len(ldir) > 0:
+        for i in ldir:
+            os.remove(subdir_path + i)
+"""     
 #
 ##
 ### Main loop
@@ -463,20 +614,33 @@ for i in range(dim[0]):
         break    
     
     else:
-        sEs = final_df.iloc[i+4]
         H_value = H_values[i+4]
         H_middle = H_values[i+2]
+        sEs = final_df.iloc[i+2]
         
         for a,b in combinations(sEs,2):  ### campo  middle
-            AE_abs = abs(a-b)
-            AE = a-b
+            # Calculates AE
+            AE = abs(a-b)
             
-            if AE_abs <= thrs_AE:
+            #Retrieves index level
+            index_a = sEs[sEs == a].index[0]
+            index_b = sEs[sEs == b].index[0]
+            
+            # Output file
+            f_comb = subdir_path + 'comb_' + index_a + '_' + index_b + '.out'
+            print f_comb
+            
+            # Checks if file already exists
+            if not os.path.isfile(f_comb):
+                # Creates file
+                f = open(subdir_path + 'comb_' + index_a + '_' + index_b + '.out' , 'w+')
+                # Writes data in file
+                f.write(u'#H   Ei   Ej   AEij   pendi   pendj   Apendij   |pendi|-|pendj|   |pendi-pendj|\n')
+                f.close()
+            
+            
+            if AE <= thrs_AE:
                 
-                #prints 'niveles buenos'
-                index_a = sEs[sEs == a].index[0]
-                index_b = sEs[sEs == b].index[0]
-            
                 # Saves levels somewhere, to then evaluate change in signs
                 k1_a = float(dic[index_a][H_value][1])
                 k1_b = float(dic[index_b][H_value][1])
@@ -486,62 +650,20 @@ for i in range(dim[0]):
                 # Calculates pend
                 pend_a = first_d(k1_a, k2_a, H_middle)
                 pend_b = first_d(k1_b, k2_b, H_middle)
-                print 'pend a' + str(pend_a)
-                print 'pend b' + str(pend_b)
                 
                 # Pend differences
                 Apend = abs(pend_a - pend_b)
+                Abs_pend = abs(pend_a) - abs(pend_b) 
                 div_pend = pend_a / pend_b
                 
-                Abs_pend = abs(pend_a) - abs(pend_b) 
-                
-                ####### Signos diferentes dividir pends; if div < 0 entra
-                               
-                if pend_a > 0:
-                    if pend_b < 0:
-                        print 'estos molan'
-                        if Apend <= thrs_pend:
-                            # Stores
-                            dic_2[H_value][index_a].append(index_b)
-                            
-                            # Writes
-                            H_middle = '{:.7f}'.format(H_middle)
-                            a = '{:.7f}'.format(a)
-                            b = '{:.7f}'.format(b)
-                            pend_a = '{:.7f}'.format(pend_a)
-                            pend_b = '{:.7f}'.format(pend_b)
-                            AE = '{:.7f}'.format(AE)
-                            Apend = '{:.7f}'.format(Apend)
-                    
-                            out_f.write(H_middle + '     ' +  str(index_a) +'     ' +
-                                        str(index_b)+ '     ' + a + '     ' + b+ '     ' +
-                                        pend_a + '     ' + pend_b + '     ' + '     ' + AE+
-                                        '     ' + Apend + '\n') 
-                        
-                elif pend_a < 0:
-                    if pend_b > 0:
-                        print 'estos molan'
-                        if Apend <= thrs_pend:
-                            # Stores
-                            dic_2[H_value][index_a].append(index_b)
-                            
-                            # Writes
-                            H_middle = '{:.7f}'.format(H_middle)
-                            a = '{:.7f}'.format(a)
-                            b = '{:.7f}'.format(b)
-                            pend_a = '{:.7f}'.format(pend_a)
-                            pend_b = '{:.7f}'.format(pend_b)
-                            AE = '{:.7f}'.format(AE)
-                            Apend = '{:.7f}'.format(Apend)
-                            
-                            out_f.write(H_middle + '     ' +  str(index_a) +'     ' +
-                                        str(index_b)+ '     ' + a + '     ' + b+ '     ' +
-                                        pend_a + '     ' + pend_b + '     ' + '     ' + AE+
-                                        '     ' + Apend + '\n')
+                # Classify non-avoided // avoided crossings
+                classify_crss(H_middle, a, b, index_a, index_b, pend_a, pend_b, AE, Apend, Abs_pend, out_avoid, out_nonavoid, thrs_AE, f_comb)
+        
                 
 
 out_f.close()
-
+out_avoid.close()
+out_nonavoid.close()
 
 # In[ ]:
 #################
