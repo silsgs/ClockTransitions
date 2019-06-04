@@ -338,17 +338,22 @@ def classify_crss(H_middle, a, b, index_a, index_b, pend_a, pend_b,AE, Apend, Ab
     f_comb.close()
 
 
-def limits_avoided(k1_a, k1_b, k2_a, k2_b):
+def limits_avoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b):
     '''Calculates first derivative of an avoided crossing'''
-    H1 = -k1_a/2*k2_a
-    H2 = -k1_b/2*k2_b
-    if H1 > H2:
-        Hmin = H2
-        Hmax = H1
-        return Hmin, Hmax
-    elif H1 < H2:
-        Hmin = H1
-        Hmax = H2
+    a = float(k2_a)
+    b = float(k1_a)
+    c = float(k0_a)
+    a2 = float(k2_b)
+    b2 = float(k1_b)
+    c2 = float(k0_b)
+    
+    x1 = -(b)/(2*(a))
+    x2 = -(b2)/(2*(a2))
+    y1 = c - ((b**2)/(4*a))
+    y2 = c2 - ((b2**2)/(4*a2))
+    print 'Aqui H1' + str(x1)
+    print 'Aqui H2' + str(x2)
+    return x1, x2, y1, y2
     
 
 def limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b):
@@ -358,18 +363,16 @@ def limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b):
     c = float(k0_a - k0_b)
      
     if a != 0:
-        x1 = (-b + sqrt(b**2 - 4*a*c)) / (2 * a)
-        x2 = (-b - sqrt(b**2 - 4*a*c)) / (2 * a)
+        x1 = (-b + math.sqrt(b**2 - 4*a*c)) / (2 * a)
+        x2 = (-b - math.sqrt(b**2 - 4*a*c)) / (2 * a)
         print 'Soluciones de la ecuacion: x1=%4.3f y x2=%4.3f ' % (x1, x2)
     else:
         if b != 0:
            x = -c / b
            print 'Solucion de la ecuacion: x=%4.3f ' % x
-     
         else:
            if c != 0:
               print 'La ecuacion no tiene solucion. '
-     
            else:
               print 'La ecuacion tiene infinitas soluciones. '
 
@@ -473,7 +476,6 @@ for i0 in range(dim[1]):
             else:
                 print 'ninguno coincide'
                 order_df.iloc[i1+1, i0] = 'nan'#int(num[0])+1
-                
                 pass
             
             five_E.pop(0)
@@ -571,7 +573,6 @@ for i1 in range(len(indexes)):
             
         else:
             continue
-
     
 # In[]:
 #
@@ -587,18 +588,18 @@ out_f = open('transitions_sum.txt', 'w')
 out_avoid = open('avoided_sum.txt', 'w')
 out_nonavoid = open('nonavoided_sum.txt', 'w')
 
+
 # Check if subdir_path exists and if its empty
 subdir_path = path + 'combinations/'
 if not os.path.exists(subdir_path):
     os.makedirs(subdir_path)
 
-"""  # need to remove files before script, or will add in case it already exists!!!!!!
 else:
     ldir = os.listdir(subdir_path)
     if len(ldir) > 0:
         for i in ldir:
             os.remove(subdir_path + i)
-"""     
+     
 #
 ##
 ### Main loop
@@ -635,7 +636,7 @@ for i in range(dim[0]):
                 # Creates file
                 f = open(subdir_path + 'comb_' + index_a + '_' + index_b + '.out' , 'w+')
                 # Writes data in file
-                f.write(u'#H   Ei   Ej   AEij   pendi   pendj   Apendij   |pendi|-|pendj|   |pendi-pendj|\n')
+                f.write(u'#H   Ei   Ej   AEij   pendi   pendj   |pendi|-|pendj|   |pendi-pendj|\n')
                 f.close()
             
             
@@ -659,11 +660,101 @@ for i in range(dim[0]):
                 # Classify non-avoided // avoided crossings
                 classify_crss(H_middle, a, b, index_a, index_b, pend_a, pend_b, AE, Apend, Abs_pend, out_avoid, out_nonavoid, thrs_AE, f_comb)
         
-                
-
 out_f.close()
 out_avoid.close()
 out_nonavoid.close()
+
+# In[]:
+
+#
+## Post-analysis of crosses
+#
+ldir = os.listdir(subdir_path)
+res = open(path + 'results.out', 'w')
+
+for f in ldir:
+    if not os.stat(subdir_path + f).st_size > 71:
+        os.remove(subdir_path+f)
+    
+    else:
+        # Read file
+        name = f.strip('comb_').strip('.out').split('_',2)
+        a = name[0] +'_' +  name[1]
+        b = name[2]
+        array = np.loadtxt(subdir_path+f, comments = '#')
+        dim = np.shape(array)
+        H = array[:,0]
+        E_a = array[:,1] 
+        E_b = array[:,2]
+        AEab = array[:,3]
+        pend_a = array[:,4]
+        pend_b = array[:,5]
+        diff1 = array[:,6]
+        diff2 = array[:,7]
+        
+        sign_penda = np.sign(array[:,4])
+        sign_pendb = np.sign(array[:,5])
+        
+        signa = np.where(np.diff(np.sign(array[:,4])))[0]
+        signb = np.where(np.diff(np.sign(array[:,5])))[0]
+        
+        ordered_AE = np.sort(array[:,3])
+        minimAE = ordered_AE[0]
+        minimAE_2 = ordered_AE[1]
+        i1, j1 = np.where(array == minimAE)
+        i2, j2 = np.where(array == minimAE_2)
+        H_min = array[i1, 0]
+        H_min2 = array[i2, 0]
+        
+        # Find polynomio for Hmin + 2 
+        H_values = np.array(H_values)
+        H_poly_ind = np.where(H_values == H_min[0])[0][0]
+        H_poly_ind2 = np.where(H_values == H_min2[0])[0][0]
+        
+        H_poly = H_values[H_poly_ind + 2]
+        H_poly2 = H_values[H_poly_ind2 + 2]
+        
+        # 
+        k0_a = dic[a][H_poly][0]
+        k1_a = dic[a][H_poly][1]
+        k2_a = dic[a][H_poly][2]
+        k0_b = dic[b][H_poly][0]
+        k1_b = dic[b][H_poly][1]
+        k2_b = dic[b][H_poly][2]
+        
+        """
+        k0_a2 = dic[a][H_poly2][0]
+        k1_a2 = dic[a][H_poly2][1]
+        k2_a2 = dic[a][H_poly2][2]
+        k0_b2 = dic[b][H_poly2][0]
+        k1_b2 = dic[b][H_poly2][1]
+        k2_b2 = dic[b][H_poly2][2]
+        """
+        
+        if len(signa) < 1: # a es linea recta
+            if len(signb) <1: # b es linea recta
+                # Non-avoided crossings
+                print '1: ' + a + b
+                limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b) 
+                
+            else: # b es linea curva
+                # Avoided crossing
+                print '2: '+ a + b
+                limits_avoided(k1_a, k1_b, k2_a, k2_b)
+                
+        else: # a es linea curva
+            if len(signb) < 1: # b es linea recta
+                # Non-avoided crossings
+                print '3: '+ a + b
+                limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b)
+                
+            else: # b es linea curva
+                # Avoided crossing
+                print '4: '+ a + b
+                limits_avoided(k1_a, k1_b, k2_a, k2_b)
+                
+
+res.close()
 
 # In[ ]:
 #################
