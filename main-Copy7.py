@@ -351,31 +351,43 @@ def limits_avoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b):
     x2 = -(b2)/(2*(a2))
     y1 = c - ((b**2)/(4*a))
     y2 = c2 - ((b2**2)/(4*a2))
-    print 'Aqui H1' + str(x1)
-    print 'Aqui H2' + str(x2)
     return x1, x2, y1, y2
     
+
 
 def limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b):
     '''Calculates crossing H value of a non-avoided crossing'''
     a = float(k2_a - k2_b)
     b = float(k1_a - k1_b)
     c = float(k0_a - k0_b)
+    sol = []
      
     if a != 0:
         x1 = (-b + math.sqrt(b**2 - 4*a*c)) / (2 * a)
         x2 = (-b - math.sqrt(b**2 - 4*a*c)) / (2 * a)
         print 'Soluciones de la ecuacion: x1=%4.3f y x2=%4.3f ' % (x1, x2)
+        sol.append(x1)
+        sol.append(x2)
     else:
         if b != 0:
            x = -c / b
            print 'Solucion de la ecuacion: x=%4.3f ' % x
+           sol.append(x)
         else:
            if c != 0:
               print 'La ecuacion no tiene solucion. '
            else:
               print 'La ecuacion tiene infinitas soluciones. '
+    return sol
 
+def calc_curvature(xmax, k1_a, k1_b, k2_a, k2_b):
+    xmax, b1, b2, a1, a2 = float(xmax), float(k1_a), float(k1_b), float(k2_a), float(k2_b)
+    curv1 = abs(2*a1)/(1+((2*a1*xmax) + b1)**2)**float(3)/2
+    curv2 = abs(2*a2)/(1+((2*a2*xmax) + b2)**2)**float(3)/2
+    print 'curv1: ' + str(curv1)
+    print 'curv2: ' + str(curv2)
+    return curv1, curv2
+    
                
 # In[7]:
 
@@ -466,7 +478,6 @@ for i0 in range(dim[1]):
             
             # Search in list of Es from ene at one H value (i1+1)
             s_es = (ene_df.iloc[i1+1]).tolist()
-            
             num = search(v0, v1, v2, s_es)
             print num
             
@@ -672,6 +683,10 @@ out_nonavoid.close()
 ldir = os.listdir(subdir_path)
 res = open(path + 'results.out', 'w')
 
+# Write header res file
+res.write('#Level_a     Level_b     Type_crossing     H_crossing     E_crossing1     E_crossing2     Curvature\n')
+
+# Loop
 for f in ldir:
     if not os.stat(subdir_path + f).st_size > 71:
         os.remove(subdir_path+f)
@@ -734,24 +749,86 @@ for f in ldir:
         if len(signa) < 1: # a es linea recta
             if len(signb) <1: # b es linea recta
                 # Non-avoided crossings
-                print '1: ' + a + b
-                limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b) 
+                type_cross = 'non-avoided'
+                print '1: ' + a + ' ' + b
+                # Calculates limits
+                res_v =  limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b)
+                
+                # Select the good solution
+                if len(res_v) > 1:
+                    if abs(H_min - res_v[0]) < abs(H_min - res_v[1]):
+                        H_cross = res_v[0]
+                    elif abs(H_min - res_v[0]) > abs(H_min - res_v[1]):
+                        H_cross = res_v[1]
+                else:
+                    H_cross = res_v[0]
+                
+                # Calculates E_cross
+                E_cross = (k2_a * (H_cross**2)) + (k1_a * H_cross) + k0_a
+                # Writes output
+                H_cross = '{:.5f}'.format(H_cross)
+                E_cross = '{:.5f}'.format(E_cross)
+                res.write(a + '     '+ b + '     '+ type_cross + '     '+ str(H_cross) + '     '+ str(E_cross) + '     -     - \n' )
+                
                 
             else: # b es linea curva
                 # Avoided crossing
+                type_cross = 'avoided'
                 print '2: '+ a + b
-                limits_avoided(k1_a, k1_b, k2_a, k2_b)
+                res_v = limits_avoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b)
+                H_cross = res_v[0]
+                E_cross1 = res_v[2]
+                E_cross2 = res_v[3]
+                H_cross = '{:.5f}'.format(H_cross)
+                E_cross1 = '{:.5f}'.format(E_cross1)
+                E_cross2 = '{:.5f}'.format(E_cross2)
+                curvature = calc_curvature(H_cross, k1_a, k1_b, k2_a, k2_b)
+                curv1 = '{:.5f}'.format(curvature[0])
+                curv2 = '{:.5f}'.format(curvature[1])
+                #curvature = '{:.5f}'.format(curvature)
+                res.write(a + '     '+ b + '     '+ type_cross + '     '+ H_cross + '     '+
+                          E_cross1 + '     ' + E_cross2 + '     ' + curv1 +'     ' + curv2 +  '\n' )
+                
                 
         else: # a es linea curva
             if len(signb) < 1: # b es linea recta
                 # Non-avoided crossings
                 print '3: '+ a + b
-                limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b)
+                res_v = limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b)
+                # Calculates limits
+                res_v =  limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b)
+                # Check results
+                if len(res_v) > 1:
+                    if abs(H_min - res_v[0]) < abs(H_min - res_v[1]):
+                        H_cross = res_v[0]
+                    elif abs(H_min - res_v[0]) > abs(H_min - res_v[1]):
+                        H_cross = res_v[1]
+                else:
+                    H_cross = res_v[0]
+                # Calculates E_cross
+                E_cross = (k2_a * (H_cross**2)) + (k1_a * H_cross) + k0_a
+                H_cross = '{:.5f}'.format(H_cross)
+                E_cross = '{:.5f}'.format(E_cross)
+                # Writes output
+                res.write(a + '     '+ b + '     '+ type_cross + '     '+ str(H_cross) + '     '+ str(E_cross) + '     -     - \n' )
                 
             else: # b es linea curva
                 # Avoided crossing
-                print '4: '+ a + b
-                limits_avoided(k1_a, k1_b, k2_a, k2_b)
+                type_cross = 'avoided'
+                print '4: '+ a + b                
+                res_v = limits_avoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b)
+                H_cross = res_v[0]
+                E_cross1 = res_v[2]
+                E_cross2 = res_v[3]
+                H_cross = '{:.5f}'.format(H_cross)
+                E_cross1 = '{:.5f}'.format(E_cross1)
+                E_cross2 = '{:.5f}'.format(E_cross2)
+                curvature = calc_curvature(H_cross, k1_a, k1_b, k2_a, k2_b)
+                curv1 = '{:.5f}'.format(curvature[0])
+                curv2 = '{:.5f}'.format(curvature[1])
+                #curvature = '{:.5f}'.format(curvature)
+                res.write(a + '     '+ b + '     '+ type_cross + '     '+ H_cross + '     '+
+                          E_cross1 + '     ' + E_cross2 + '     ' + curv1 +'     ' + curv2 +  '\n' )
                 
 
 res.close()
