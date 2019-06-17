@@ -29,8 +29,11 @@ ene_f = path + "simpre.ene"
 ene = np.loadtxt(ene_f, dtype= float)
 plt.plot(ene[:,0], ene[:,1:])
 print 'n. of points: ' + str(len(ene))
+plt.xlabel('Magnetic field (T)')
+plt.ylabel(u'Energy (cm-1)')
 plt.savefig('plot_ene.png', dpi = 300)
 plt.show()
+
 
 # In[15]:
 #
@@ -255,14 +258,41 @@ I = float(7.5)
 g_par = 0.0000
 g_per = 0.0000
 
-# Lists
+
+
+## Lists
+# Total spin levels of the system
 tot_lvls = int((2*J + 1)*(2*I + 1))
 m_j = list(range(int(-(2*J)), int((2*J+2)), int(2)))
 m_i = list(range(int(-(2*I)), int((2*I+2)), int(2)))
 
+
+
+# Loads new 'simpre.ene' file with energies of each level (quantum number) at diff H field
+n_levels = raw_input('How many n lower-energy levels are you interested in?:')
+
+with open(path + 'simpre.ene', 'r') as ene_f:
+    ene = np.loadtxt(ene_f, dtype= float)
+    if n_levels == '':
+        n_levels = np.size(ene, axis=1)-1
+        ene_df = pd.DataFrame(data=ene[0:,1:],  index=ene[0:,0]) #, columns=range(1,len(lvls_list) +1))
+    else:
+        n_levels = int(n_levels)
+        ene_df = pd.DataFrame(data=ene[0:,1:(n_levels + 1)],  index=ene[0:,0])
+
+
+# Removes values at 0.0T
+if float(0.0) in ene_df.index:
+    ene_df = ene_df.drop([0.0])
+
+
+
+# Generates levels list    
 lvls_list = []
-for i in list(range(np.size(ene, axis=1)-1)):
+for i in list(range(n_levels)):
     lvls_list.append('lvl_'+ str(i+1))
+
+
 
 ## Generate projections list from m_j and m_i
 projections_l = []
@@ -271,14 +301,9 @@ for j in m_j:
         proj = str(j) + '/' + str(i)
         projections_l.append(proj)
 
-# Loads new 'simpre.ene' file with energies of each level (quantum number) at diff H field
-with open(path + 'simpre.ene', 'r') as ene_f:
-    ene = np.loadtxt(ene_f, dtype= float)
-    ene_df = pd.DataFrame(data=ene[0:,1:],  index=ene[0:,0]) #, columns=range(1,len(lvls_list) +1))
 
-if float(0.0) in ene_df.index:
-    ene_df = ene_df.drop([0.0])
-    
+
+   
 # Creating an empty DF for further lvl ordering
 H_values = ene_df.index
 expected_df = pd.DataFrame(index=H_values, columns=lvls_list)
@@ -294,10 +319,14 @@ for i in lvls_list:
         if c < 6 :
             order_df.loc[i2, i] = i.replace('lvl_' , '')
 
+
+
 ## First check
 dim = ene_df.shape
 if int(dim[1]) !=  len(lvls_list):
     print 'hay un problema de dimensiones'
+
+
 
 # Get minimum value 
 minAE = 10000000000
@@ -436,6 +465,19 @@ for i in range(dims[0]): # valores de H
 final_df.to_csv(path + 'final.txt', header = lvls_list, sep='\t', na_rep='na', float_format='%.7f' )
 
 # In[]:
+# Visual checking of results final vs. expected
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey = True)
+ax1.plot(ene[:,0], ene_df.iloc[:,0:])
+ax1.set_title('Energies')
+ax2.plot(expected_df.index, expected_df.iloc[:,1:])
+ax2.set_title('Expected energies')
+ax3.plot(final_df.index, final_df.iloc[:,1:])
+ax3.set_title('Final energies')
+fig.text(0.5,0.01, 'Magnetic field (T)', ha='center', fontsize = 12)
+
+plt.savefig('summary_plots.png', dpi = 300)
+
+# In[]:
 #
 ##
 ### Read amd parse poli.txt file
@@ -482,11 +524,10 @@ for i1 in range(len(indexes)):
 #
 thrs_AE = float(0.5)
 #thrs = float((raw_input('Valor max AE (thrs_AE): '))
-
 thrs_pend = float(0.1)
 #thrs_k1 = float((raw_input('Valor max d(pend) (thrs_pend): '))
 
-out_f = open('transitions_sum.txt', 'w')
+# Open output files
 out_avoid = open('avoided_sum.txt', 'w')
 out_nonavoid = open('nonavoided_sum.txt', 'w')
 
@@ -501,7 +542,8 @@ else:
     if len(ldir) > 0:
         for i in ldir:
             os.remove(subdir_path + i)
-     
+
+    
 #
 ##
 ### Main loop
@@ -562,11 +604,10 @@ for i in range(dim[0]):
                 # Classify non-avoided // avoided crossings
                 classify_crss(H_middle, a, b, index_a, index_b, pend_a, pend_b, AE, Apend, Abs_pend, out_avoid, out_nonavoid, thrs_AE, f_comb)
         
-out_f.close()
 out_avoid.close()
 out_nonavoid.close()
 
-# In[]:
+
 #
 ## Post-analysis of crosses
 #
@@ -627,14 +668,6 @@ for f in ldir:
         k1_b = dic[b][H_poly][1]
         k2_b = dic[b][H_poly][2]
         
-        """
-        k0_a2 = dic[a][H_poly2][0]
-        k1_a2 = dic[a][H_poly2][1]
-        k2_a2 = dic[a][H_poly2][2]
-        k0_b2 = dic[b][H_poly2][0]
-        k1_b2 = dic[b][H_poly2][1]
-        k2_b2 = dic[b][H_poly2][2]
-        """
         
         if len(signa) < 1:
             if len(signb) <1:
