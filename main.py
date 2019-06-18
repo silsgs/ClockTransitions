@@ -293,15 +293,12 @@ for i in list(range(n_levels)):
     lvls_list.append('lvl_'+ str(i+1))
 
 
-
 ## Generate projections list from m_j and m_i
 projections_l = []
 for j in m_j:
     for i in m_i:
         proj = str(j) + '/' + str(i)
         projections_l.append(proj)
-
-
 
    
 # Creating an empty DF for further lvl ordering
@@ -320,12 +317,10 @@ for i in lvls_list:
             order_df.loc[i2, i] = i.replace('lvl_' , '')
 
 
-
 ## First check
 dim = ene_df.shape
 if int(dim[1]) !=  len(lvls_list):
     print 'hay un problema de dimensiones'
-
 
 
 # Get minimum value 
