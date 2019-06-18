@@ -1,0 +1,65 @@
+#Level_a     Level_b     Type_crossing     H_crossing     E_crossing1     E_crossing2     AE     Curvature
+lvl_10     lvl_11     non-avoided     -0.09493     -175.25389     -     - 
+lvl_10     lvl_12     non-avoided     -0.07120     -175.22773     -     - 
+lvl_10     lvl_13     non-avoided     -0.04747     -175.19077     -     - 
+lvl_10     lvl_14     non-avoided     -0.02373     -175.14741     -     - 
+lvl_10     lvl_15     non-avoided     -0.00000     -175.10028     -     - 
+lvl_10     lvl_16     non-avoided     0.02373     -175.05084     -     - 
+lvl_11     lvl_12     non-avoided     -0.04747     -175.25389     -     - 
+lvl_11     lvl_13     non-avoided     -0.02373     -175.22773     -     - 
+lvl_11     lvl_14     non-avoided     -0.00000     -175.19077     -     - 
+lvl_11     lvl_15     non-avoided     0.02373     -175.14741     -     - 
+lvl_11     lvl_16     non-avoided     0.04747     -175.10028     -     - 
+lvl_12     lvl_13     non-avoided     0.00000     -175.25389     -     - 
+lvl_12     lvl_14     non-avoided     0.02373     -175.22773     -     - 
+lvl_12     lvl_15     non-avoided     0.04747     -175.19077     -     - 
+lvl_12     lvl_16     non-avoided     0.07120     -175.14741     -     - 
+lvl_13     lvl_14     non-avoided     0.04747     -175.25389     -     - 
+lvl_13     lvl_15     non-avoided     0.07120     -175.22773     -     - 
+lvl_13     lvl_16     non-avoided     0.09493     -175.19077     -     - 
+lvl_14     lvl_15     non-avoided     0.09493     -175.25389     -     - 
+lvl_14     lvl_16     non-avoided     0.11867     -175.22773     -     - 
+lvl_15     lvl_16     non-avoided     0.14240     -175.25389     -     - 
+lvl_1     lvl_16     avoided     0.16613     -175.56969     -175.26360     17.77857     17.76429
+lvl_1     lvl_2     non-avoided     0.14240     -175.57940     -     - 
+lvl_1     lvl_3     non-avoided     0.11867     -175.60556     -     - 
+lvl_1     lvl_4     non-avoided     0.09493     -175.64252     -     - 
+lvl_1     lvl_5     non-avoided     0.07120     -175.68587     -     - 
+lvl_1     lvl_6     non-avoided     0.04747     -175.73300     -     - 
+lvl_1     lvl_7     non-avoided     0.02373     -175.78245     -     - 
+lvl_1     lvl_8     non-avoided     0.00000     -175.83339     -     - 
+lvl_2     lvl_15     avoided     0.11867     -175.56969     -175.26360     17.77857     17.77857
+lvl_2     lvl_3     non-avoided     0.09493     -175.57940     -     - 
+lvl_2     lvl_4     non-avoided     0.07120     -175.60556     -     - 
+lvl_2     lvl_5     non-avoided     0.04747     -175.64252     -     - 
+lvl_2     lvl_6     non-avoided     0.02373     -175.68587     -     - 
+lvl_2     lvl_7     non-avoided     0.00000     -175.73300     -     - 
+lvl_2     lvl_8     non-avoided     -0.02373     -175.78245     -     - 
+lvl_3     lvl_14     avoided     0.07120     -175.56969     -175.26360     17.77857     17.77857
+lvl_3     lvl_4     non-avoided     0.04747     -175.57940     -     - 
+lvl_3     lvl_5     non-avoided     0.02373     -175.60556     -     - 
+lvl_3     lvl_6     non-avoided     -0.00000     -175.64252     -     - 
+lvl_3     lvl_7     non-avoided     -0.02373     -175.68587     -     - 
+lvl_3     lvl_8     non-avoided     -0.04747     -175.73300     -     - 
+lvl_4     lvl_13     avoided     0.02373     -175.56969     -175.26360     17.77857     17.77857
+lvl_4     lvl_5     non-avoided     0.00000     -175.57940     -     - 
+lvl_4     lvl_6     non-avoided     -0.02373     -175.60556     -     - 
+lvl_4     lvl_7     non-avoided     -0.04747     -175.64252     -     - 
+lvl_4     lvl_8     non-avoided     -0.07120     -175.68587     -     - 
+lvl_5     lvl_12     avoided     -0.02373     -175.56969     -175.26360     17.77857     17.77857
+lvl_5     lvl_6     non-avoided     -0.04747     -175.57940     -     - 
+lvl_5     lvl_7     non-avoided     -0.07120     -175.60556     -     - 
+lvl_5     lvl_8     non-avoided     -0.09493     -175.64252     -     - 
+lvl_6     lvl_11     avoided     -0.07120     -175.56969     -175.26360     17.77857     17.77857
+lvl_6     lvl_7     non-avoided     -0.09493     -175.57940     -     - 
+lvl_6     lvl_8     non-avoided     -0.11867     -175.60556     -     - 
+lvl_7     lvl_10     avoided     -0.11866     -175.56969     -175.26360     17.78571     17.78571
+lvl_7     lvl_8     non-avoided     -0.14240     -175.57940     -     - 
+lvl_8     lvl_9     avoided     -0.16613     -175.56969     -175.26360     17.77857     17.77857
+lvl_9     lvl_10     non-avoided     -0.14240     -175.25389     -     - 
+lvl_9     lvl_11     non-avoided     -0.11867     -175.22773     -     - 
+lvl_9     lvl_12     non-avoided     -0.09493     -175.19077     -     - 
+lvl_9     lvl_13     non-avoided     -0.07120     -175.14741     -     - 
+lvl_9     lvl_14     non-avoided     -0.04747     -175.10028     -     - 
+lvl_9     lvl_15     non-avoided     -0.02373     -175.05084     -     - 
+lvl_9     lvl_16     non-avoided     -0.00000     -174.99990     -     - 
