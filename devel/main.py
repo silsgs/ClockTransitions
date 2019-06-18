@@ -23,18 +23,6 @@ path = os.getcwd() + '/'
 # 5. Run main.py
 
 
-# In[2]:
-# 1. Plot your results
-ene_f = path + "simpre.ene"
-ene = np.loadtxt(ene_f, dtype= float)
-plt.plot(ene[:,0], ene[:,1:])
-print 'n. of points: ' + str(len(ene))
-plt.xlabel('Magnetic field (T)')
-plt.ylabel(u'Energy (cm-1)')
-plt.savefig('plot_ene.png', dpi = 300)
-plt.show()
-
-
 # In[15]:
 #
 ## Functions module
@@ -247,14 +235,30 @@ def calc_curvature(xmax, k1_a, k1_b, k2_a, k2_b):
     return curv1, curv2
 
 # In[4]:
+# 1. Plot your results
+ene_f = path + "simpre.ene"
+ene = np.loadtxt(ene_f, dtype= float)
+
+# Check if subdir_path exists and if its empty
+plotsdir_path = path + 'plots/'
+if not os.path.exists(plotsdir_path):
+    os.makedirs(plotsdir_path)
+
+plt.plot(ene[:,0], ene[:,1:])
+print 'n. of points: ' + str(len(ene))
+plt.xlabel(u'Magnetic field (T)')
+plt.ylabel(u'Energy (cm-1)')
+plt.savefig('plots/plot_ene.png', dpi = 300)
+plt.show()
+
 #
 ## Initial definitions
 #
 # Defined by the user so far; automatize for the future
-J = float(8)
-I = float(7.5)
-#J = float(raw_input('Valor de J: '))
-#I = float(raw_input('Valor de I: '))
+#J = float(8)
+#I = float(7.5)
+J = float(raw_input('Valor de J: '))
+I = float(raw_input('Valor de I: '))
 g_par = 0.0000
 g_per = 0.0000
 
@@ -475,7 +479,7 @@ ax3.plot(final_df.index, final_df.iloc[:,1:])
 ax3.set_title('Final energies')
 fig.text(0.5,0.01, 'Magnetic field (T)', ha='center', fontsize = 12)
 
-plt.savefig('summary_plots.png', dpi = 300)
+plt.savefig('plots/summary_plots.png', dpi = 300)
 
 # In[]:
 #
