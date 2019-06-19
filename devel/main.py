@@ -10,7 +10,7 @@ import math
 from itertools import combinations
 
 path = os.getcwd() + '/'
-
+print path
 
 # =============================================================================
 #                              FLOW
@@ -262,10 +262,10 @@ if not os.path.exists(resdir_path):
 ## Initial definitions
 #
 # Defined by the user so far; automatize for the future
-#J = float(8)
-#I = float(7.5)
-J = float(raw_input('Valor de J: '))
-I = float(raw_input('Valor de I: '))
+J = float(8)
+I = float(7.5)
+#J = float(raw_input('Valor de J: '))
+#I = float(raw_input('Valor de I: '))
 g_par = 0.0000
 g_per = 0.0000
 
@@ -483,7 +483,7 @@ plt.savefig('plots/summary_plots.png', dpi = 300)
 ##
 #
 # Opens and reads
-in_f = open(path + 'poli.out', 'r')
+in_f = open(path + 'res/poli.out', 'r')
 poly_cont = in_f.read().split('\n')
 in_f.close()
 
@@ -614,7 +614,7 @@ ldir = os.listdir(subdir_path)
 res = open(path + 'res/results.out', 'w')
 
 # Write header res file
-res.write('#Level_a     Level_b     Type_crossing     H_crossing     E_crossing1     E_crossing2     AE     Curvature\n')
+res.write('#Level_a     Level_b     Type_crossing     H_crossing     E_crossing1     E_crossing2     AE     Curvature1     Curvature2\n')
 
 # Loop
 for f in ldir:
@@ -701,6 +701,8 @@ for f in ldir:
                 H_cross = res_v[0]
                 E_cross1 = res_v[2]
                 E_cross2 = res_v[3]
+                AE = abs(E_cross1 - E_cross2)
+                AE = '{:.5f}'.format(AE)
                 H_cross = '{:.5f}'.format(H_cross)
                 E_cross1 = '{:.5f}'.format(E_cross1)
                 E_cross2 = '{:.5f}'.format(E_cross2)
@@ -709,7 +711,7 @@ for f in ldir:
                 curv2 = '{:.5f}'.format(curvature[1])
                 #curvature = '{:.5f}'.format(curvature)
                 res.write(a + '     '+ b + '     '+ type_cross + '     '+ H_cross + '     '+
-                          E_cross1 + '     ' + E_cross2 + '     ' + curv1 +'     ' + curv2 +  '\n' )
+                          E_cross1 + '     ' + E_cross2 + '     ' + AE +'     ' + curv1 +'     ' + curv2 +  '\n' )
                 
                 
         else: # a es linea curva
@@ -742,6 +744,8 @@ for f in ldir:
                 H_cross = res_v[0]
                 E_cross1 = res_v[2]
                 E_cross2 = res_v[3]
+                AE = abs(E_cross1 - E_cross2)
+                AE = '{:.5f}'.format(AE)
                 H_cross = '{:.5f}'.format(H_cross)
                 E_cross1 = '{:.5f}'.format(E_cross1)
                 E_cross2 = '{:.5f}'.format(E_cross2)
@@ -749,7 +753,7 @@ for f in ldir:
                 curv1 = '{:.5f}'.format(curvature[0])
                 curv2 = '{:.5f}'.format(curvature[1])
                 res.write(a + '     '+ b + '     '+ type_cross + '     '+ H_cross + '     '+
-                          E_cross1 + '     ' + E_cross2 + '     ' + curv1 +'     ' + curv2 +  '\n' )
+                          E_cross1 + '     ' + E_cross2 + '     ' + AE + '     ' + curv1 +'     ' + curv2 +  '\n' )
                 
 
 res.close()
