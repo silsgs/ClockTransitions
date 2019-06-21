@@ -279,7 +279,8 @@ m_i = list(range(int(-(2*I)), int((2*I+2)), int(2)))
 
 
 # Loads new 'simpre.ene' file with energies of each level (quantum number) at diff H field
-n_levels = raw_input('How many n lower-energy levels are you interested in?:')
+#n_levels = raw_input('How many n lower-energy levels are you interested in?:')
+n_levels = 16
 
 with open(path + 'simpre.ene', 'r') as ene_f:
     ene = np.loadtxt(ene_f, dtype= float)
