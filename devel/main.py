@@ -62,7 +62,7 @@ def search(v0, v1, v2, list_e): #index = pos-1
         if e0 == 'u':
             continue
         e0 = round(float(e0), 7)
-        diff = abs(abs(float(v0)) - abs(float(e0)))
+        diff = abs(float(v0) - float(e0))
         if  diff < 10**-6:
             num.append(i)
         else:
@@ -251,7 +251,7 @@ plt.ylabel(u'Energy (cm-1)')
 plt.savefig('plots/plot_ene.png', dpi = 300)
 plt.show()
 
-
+# In[]]:
 # Check if res_path exists otherwise creates it
 resdir_path = path + 'res/'
 if not os.path.exists(resdir_path):
@@ -421,8 +421,14 @@ for i0 in range(dim[1]):
                 order_df.iloc[i1+1, i0] = int(num[0])+1
             else:
                 print 'ninguno coincide'
+                print 'v0'
+                print v0
+                print 'H_value'
+                print H_value
+                print 'list'
+                print s_es
                 order_df.iloc[i1+1, i0] = 'nan'#int(num[0])+1
-                pass
+                pass                
             
             five_E.pop(0)
             five_H.pop(0)
@@ -466,12 +472,12 @@ final_df.to_csv(path + 'res/final.txt', header = lvls_list, sep='\t', na_rep='na
 
 # In[]:
 # Visual checking of results final vs. expected
-fig, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey = True)
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3)#, sharey = True)
 ax1.plot(ene[:,0], ene_df.iloc[:,0:])
 ax1.set_title('Energies')
-ax2.plot(expected_df.index, expected_df.iloc[:,1:])
+ax2.plot(expected_df.index, expected_df.iloc[:,0:])
 ax2.set_title('Expected energies')
-ax3.plot(final_df.index, final_df.iloc[:,1:])
+ax3.plot(final_df.index, final_df.iloc[:,0:])
 ax3.set_title('Final energies')
 fig.text(0.5,0.01, 'Magnetic field (T)', ha='center', fontsize = 12)
 
@@ -660,7 +666,7 @@ for f in ldir:
         H_poly = H_values[H_poly_ind + 2]
         H_poly2 = H_values[H_poly_ind2 + 2]
         
-        # 
+        # Assign data
         k0_a = dic[a][H_poly][0]
         k1_a = dic[a][H_poly][1]
         k2_a = dic[a][H_poly][2]
