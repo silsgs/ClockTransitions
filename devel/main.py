@@ -56,19 +56,27 @@ def truncate(f, n):
 
 def search(v0, v1, v2, list_e): #index = pos-1
     '''Finds the corresponding E value in simpre.ene comparing with expected_value'''
-    num = []
+    #num = []
+    diffs = {}
     for i in range(len(list_e)):
         e0 = list_e[i]
         if e0 == 'u':
             continue
+        
+        
         e0 = round(float(e0), 7)
         diff = abs(float(v0) - float(e0))
+        diffs[i] = diff
+        
+        """
         if  diff < 10**-6:
             num.append(i)
         else:
             if  e0 <= v1:
                 if e0 >= v2:
                     num.append(i)
+        """
+    num = min(diffs, key=diffs.get)
     return num
 
 
@@ -416,7 +424,9 @@ for i0 in range(dim[1]):
             # Searches in list of Es from ene at one H value (i1+1)
             s_es = (ene_df.iloc[i1+1]).tolist()
             num = search(v0, v1, v2, s_es)
+            order_df.iloc[i1+1, i0] = int(num)+1
             
+            """
             if len(num) == 1:
                 order_df.iloc[i1+1, i0] = int(num[0])+1
             else:
@@ -429,6 +439,7 @@ for i0 in range(dim[1]):
                 print s_es
                 order_df.iloc[i1+1, i0] = 'nan'#int(num[0])+1
                 pass                
+            """
             
             five_E.pop(0)
             five_H.pop(0)
@@ -472,7 +483,7 @@ final_df.to_csv(path + 'res/final.txt', header = lvls_list, sep='\t', na_rep='na
 
 # In[]:
 # Visual checking of results final vs. expected
-fig, (ax1, ax2, ax3) = plt.subplots(1, 3)#, sharey = True)
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey = True)
 ax1.plot(ene[:,0], ene_df.iloc[:,0:])
 ax1.set_title('Energies')
 ax2.plot(expected_df.index, expected_df.iloc[:,0:])
