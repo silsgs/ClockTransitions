@@ -1,0 +1,11 @@
+Clock Transsitions - SIMPRE :
+
+Ho_spatial configurations:
+ - Ho_m01 : Molecula palo. 
+ - Ho_m02 : one upper charge + 2 down equally distributed
+ - Ho_m03 : one upper charge + 3 down equally distributed
+ - Ho_m04 : one upper charge + 4 down equally distributed 
+ - Ho_m05 : one upper charge + 5 down equally distributed
+
+Fisrt round - Magnetic field : [-9.5, 9.5]
+Charge value - 0.5
