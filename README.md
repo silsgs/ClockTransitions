@@ -30,3 +30,10 @@ To analyze the evolution of spin levels, or whatever you are studing as a functi
 ``` python plotter.py  ```
 
 2. 
+
+
+## About the program...
+Simplified workflows of the main two scripts:
+
+![organizer.py](/Users/silvia/Silvia/Conferences/GroupMeetings/Jul-1/organizer.py.png)
+![trsnsitions_classifier.py.png](/Users/silvia/Silvia/Conferences/GroupMeetings/Jul-1/transitions_classifier.py.png)
