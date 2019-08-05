@@ -37,3 +37,9 @@ Simplified workflows of the main two scripts:
 
 ![organizer.py](organizer.py.png)
 ![transitions_classifier.py.png](transitions_classifier.py.png)
+
+
+# FAQ 
+Silvia M. Gimenez Santamarina
+
+silvia.m.gimenez@uv.es
