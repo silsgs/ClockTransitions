@@ -1,4 +1,4 @@
-#Clock transitions classifier code
+# Clock transitions classifier code
 
 Welcome to the repo hosting **Clock transiftions classifier**. Here you will find a short description of the code and algorithm implemented; very-easy (non-computational scientists don't be afraid!) instructions to run the code; and how to visualize/analyze your results. 
 
