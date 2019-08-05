@@ -34,7 +34,7 @@ To analyze the evolution of spin levels, or whatever you are studing as a functi
 
 ### Results obtained from SIMPRE:
 
-1. Fisrts plot your results:
+1. First plot your results:
 ``` python plotter.py  ```
 
 2. 
