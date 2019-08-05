@@ -19,3 +19,14 @@ Welcome to the repo hosting **Clock transiftions classifier**. Here you will fin
 You have two options to run this code. If your study has used SIMPRE, you will need to run the post-analysis script related ```organizer.py``` in order to sort the energy of your spin levels in columns. 
 
 To analyze the evolution of spin levels, or whatever you are studing as a function of a variable run ```transitions-classifier.py```.
+
+
+
+## Instructions
+
+### Results obtained from SIMPRE:
+
+1. Fisrts plot your results:
+``` python plotter.py  ```
+
+2. 
