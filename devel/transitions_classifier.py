@@ -33,6 +33,154 @@ def extract_poly(i1, indexes, poly_cont):
         data = poly_cont[starting_line:end_line]
         return data
 
+def first_d(k1,k2,H):
+    '''Calculates first derivative'''
+    k1 = float(k1)
+    k2 = float(k2)
+    H = float(H)
+    x = k1 + 2*k2*H
+    return x
+
+
+def classify_crss(H_middle, a, b, index_a, index_b, pend_a, pend_b,AE, Apend, Abs_pend, out_f1, out_f2, thrs_AE, f_comb):
+    '''Classifies the type of crossing (avoided, non-avoided) based on pends'''
+    f_comb = open(f_comb, 'a')
+    thrs_AE2 = float(thrs_AE)/100
+    
+    if Abs_pend <= thrs_pend:
+        if pend_a/pend_b < 0 :
+            if pend_a > 0:
+                if pend_b < 0:
+                    if Apend <= thrs_pend:
+                        # Writes
+                        H_middle = '{:.7f}'.format(H_middle)
+                        a = '{:.7f}'.format(a)
+                        b = '{:.7f}'.format(b)
+                        pend_a = '{:.7f}'.format(pend_a)
+                        pend_b = '{:.7f}'.format(pend_b)
+                        AE = '{:.7f}'.format(AE)
+                        Apend = '{:.7f}'.format(Apend)
+                        Abs_pend = '{:.7f}'.format(Abs_pend)
+                
+                        f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
+                                    pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+                        
+                        out_f1.write(H_middle + '     ' +  str(index_a) +'     ' +
+                                    str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                                    pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                                    '     ' + Apend + '\n')
+                
+                    elif Apend > 1:
+                        if AE <= thrs_AE2:
+                            # Writes
+                            H_middle = '{:.7f}'.format(H_middle)
+                            a = '{:.7f}'.format(a)
+                            b = '{:.7f}'.format(b)
+                            pend_a = '{:.7f}'.format(pend_a)
+                            pend_b = '{:.7f}'.format(pend_b)
+                            AE = '{:.7f}'.format(AE)
+                            Apend = '{:.7f}'.format(Apend)
+                            Abs_pend = '{:.7f}'.format(Abs_pend)
+                    
+                            out_f2.write(H_middle + '     ' +  str(index_a) +'     ' +
+                                        str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                                        pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                                        '     ' + Apend + '\n') 
+                            f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
+                                    pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+            
+            elif pend_a < 0:
+                if pend_b > 0:
+                   if Apend <= thrs_pend:
+                        # Writes
+                        H_middle = '{:.7f}'.format(H_middle)
+                        a = '{:.7f}'.format(a)
+                        b = '{:.7f}'.format(b)
+                        pend_a = '{:.7f}'.format(pend_a)
+                        pend_b = '{:.7f}'.format(pend_b)
+                        AE = '{:.7f}'.format(AE)
+                        Apend = '{:.7f}'.format(Apend)
+                        Abs_pend = '{:.7f}'.format(Abs_pend)
+                
+                        out_f1.write(H_middle + '     ' +  str(index_a) +'     ' +
+                                    str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                                    pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                                    '     ' + Apend + '\n')
+                        f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
+                                    pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+                
+                   elif Apend > 1:
+                         if AE <= thrs_AE2:
+                            # Writes
+                            H_middle = '{:.7f}'.format(H_middle)
+                            a = '{:.7f}'.format(a)
+                            b = '{:.7f}'.format(b)
+                            pend_a = '{:.7f}'.format(pend_a)
+                            pend_b = '{:.7f}'.format(pend_b)
+                            AE = '{:.7f}'.format(AE)
+                            Apend = '{:.7f}'.format(Apend)
+                            Abs_pend = '{:.7f}'.format(Abs_pend)
+                    
+                            out_f2.write(H_middle + '     ' +  str(index_a) +'     ' +
+                                        str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                                        pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                                        '     ' + Apend + '\n') 
+                            f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
+                                    pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+        elif pend_a/pend_b > 0:
+            print 'exotic crosses'
+    f_comb.close()
+
+
+def limits_avoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b):
+    '''Calculates first derivative of an avoided crossing'''
+    a = float(k2_a)
+    b = float(k1_a)
+    c = float(k0_a)
+    a2 = float(k2_b)
+    b2 = float(k1_b)
+    c2 = float(k0_b)
+    
+    x1 = -(b)/(2*(a))
+    x2 = -(b2)/(2*(a2))
+    y1 = c - ((b**2)/(4*a))
+    y2 = c2 - ((b2**2)/(4*a2))
+    return x1, x2, y1, y2
+
+
+def limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b):
+    '''Calculates crossing H value of a non-avoided crossing'''
+    a = float(k2_a - k2_b)
+    b = float(k1_a - k1_b)
+    c = float(k0_a - k0_b)
+    sol = []
+     
+    if a != 0:
+        x1 = (-b + math.sqrt(b**2 - 4*a*c)) / (2 * a)
+        x2 = (-b - math.sqrt(b**2 - 4*a*c)) / (2 * a)
+        print 'Soluciones de la ecuacion: x1=%4.3f y x2=%4.3f ' % (x1, x2)
+        sol.append(x1)
+        sol.append(x2)
+    else:
+        if b != 0:
+           x = -c / b
+           print 'Solucion de la ecuacion: x=%4.3f ' % x
+           sol.append(x)
+        else:
+           if c != 0:
+              print 'La ecuacion no tiene solucion. '
+           else:
+              print 'La ecuacion tiene infinitas soluciones. '
+    return sol
+
+
+def calc_curvature(xmax, k1_a, k1_b, k2_a, k2_b):
+    xmax, b1, b2, a1, a2 = float(xmax), float(k1_a), float(k1_b), float(k2_a), float(k2_b)
+    curv1 = abs(2*a1)/(1+((2*a1*xmax) + b1)**2)**float(3)/2
+    curv2 = abs(2*a2)/(1+((2*a2*xmax) + b2)**2)**float(3)/2
+    print 'curv1: ' + str(curv1)
+    print 'curv2: ' + str(curv2)
+    return curv1, curv2
 
 
 
@@ -79,7 +227,11 @@ if __name__ == "__main__":
             else:
                 continue
             
-    
+
+
+
+    # Load input file
+    final_df = pd.read_csv(path + 'res/final.txt', sep='\t')
     
     # Open output files
     out_avoid = open('res/avoided_sum.txt', 'w')
@@ -116,14 +268,17 @@ if __name__ == "__main__":
             H_value = H_values[i+4]
             H_middle = H_values[i+2]
             sEs = final_df.iloc[i+2]
+            print final_df
             
             for a,b in combinations(sEs,2):  ### campo  middle
                 # Calculates AE
                 AE = abs(a-b)
                 
+                #print sEs
                 #Retrieves index level
                 index_a = sEs[sEs == a].index[0]
                 index_b = sEs[sEs == b].index[0]
+                
                 
                 # Output file
                 f_comb = subdir_path + 'comb_' + index_a + '_' + index_b + '.out'
@@ -313,7 +468,7 @@ if __name__ == "__main__":
     
     res.close()
         
-        
+    
     
     
 
