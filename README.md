@@ -32,12 +32,22 @@ To analyze the evolution of spin levels, or whatever you are studing as a functi
 
 ## Instructions
 
-### Results obtained from SIMPRE:
+### Starting from **SIMPRE**'s output:
 
-1. First plot your results:
+Run the following commands at the same directory where the file *simpre.ene* and *simpre.out* are.
+
+(Optional) Plot your **SIMPRE**'s results:
+
 ``` python plotter.py  ```
 
-2. 
+1. Set the parameters defining your system at *parameters.py*. To modify the file you can, open the file with a typical plain text editor (Linux: Gedit; Windows: Notepad; MacOS: TextEditor) or use vim if you work on the command line. Then run:
+
+``` python parameters.py ```
+
+2. Run the script that classifies corectly sort the energy value corresponding to each spin level. This step ends creating a new directory called *res*, where you will find all the intermediate files created along the perfomrmance of the code, and you final results. In addition, you will find a second directory called *plots*, where a very intuitive quality control can be done by checking the graph *summary_plots.png* created at the current step. 
+
+``` python organizer.py  ```
+
 
 
 ## About the program...
