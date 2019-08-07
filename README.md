@@ -48,6 +48,9 @@ Run the following commands at the same directory where the file *simpre.ene* and
 
 ``` python organizer.py  ```
 
+3. Finally, it's time to classify the crosses and avoided crosses of your spin levels. The results will be storaged in */res/* directory, *results.out*, *avoided_sum.txt* and *nonavoided_sum.txt* are created. In case you want to analyze the results more in detail, we generate files with the detailed information of both levels crossing accesible by the user at */combinations/* directory. For more info read **Output files** section. Run:
+
+``` python transitions_classifier.py  ```
 
 
 ## About the program...
