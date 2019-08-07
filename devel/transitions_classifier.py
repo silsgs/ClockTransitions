@@ -33,6 +33,7 @@ def extract_poly(i1, indexes, poly_cont):
         data = poly_cont[starting_line:end_line]
         return data
 
+
 def first_d(k1,k2,H):
     '''Calculates first derivative'''
     k1 = float(k1)
@@ -181,6 +182,7 @@ def calc_curvature(xmax, k1_a, k1_b, k2_a, k2_b):
     print 'curv1: ' + str(curv1)
     print 'curv2: ' + str(curv2)
     return curv1, curv2
+
 
 
 
@@ -468,9 +470,12 @@ if __name__ == "__main__":
     
     res.close()
         
-    
-    
-    
+
+
+
+# =============================================================================
+#     End of run
+# =============================================================================    
 
     print "#################################################"
     print 'End of run'

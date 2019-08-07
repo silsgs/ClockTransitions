@@ -481,18 +481,74 @@ for i in range(dims[0]): # valores de H
 # Writing outputs
 final_df.to_csv(path + 'res/final.txt', header = lvls_list, sep='\t', na_rep='na', float_format='%.7f' )
 
+
 # In[]:
-# Visual checking of results final vs. expected
-fig, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey = True)
+
+# Quality control check point!!
+# Difference between initial E vs. Expected && initial E vs final order
+t = np.empty([dims[0], dims[1]], dtype=float)
+for i0 in range(dims[1]):
+    for i1 in range(dims[0]):
+        #print type(expected_df.iloc[i1, i0])
+        v = abs(float(expected_df.iloc[i1, i0]) - float(final_df.iloc[i1, i0]))
+        t[i1,i0] = v
+        print v
+
+# In[]:
+
+# Visual checking of results final vs. expected (OLD)
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey = True, figsize=(7, 5))
+fig.text(-0.02, 0.5, 'Energy (cm$^{-1}$)', va='center', rotation='vertical', fontsize = 13 )
+fig.text(0.5,0.01, 'Magnetic field (T)', ha='center', fontsize = 13)
+
 ax1.plot(ene[:,0], ene_df.iloc[:,0:])
-ax1.set_title('Energies')
+ax1.set_title('Initial energies')
+
 ax2.plot(expected_df.index, expected_df.iloc[:,0:])
 ax2.set_title('Expected energies')
+
 ax3.plot(final_df.index, final_df.iloc[:,0:])
-ax3.set_title('Final energies')
-fig.text(0.5,0.01, 'Magnetic field (T)', ha='center', fontsize = 12)
+ax3.set_title('Final order')
 
 plt.savefig('plots/summary_plots.png', dpi = 300)
+
+# In[]:
+from matplotlib.gridspec import GridSpec
+
+# Visual checking of results final vs. expected
+fig = plt.figure(constrained_layout = True, figsize=(7, 5))
+#fig.suptitle("Results summary")
+fig.text(-0.05, 0.5, 'Energy (cm$^{-1}$)', va='center', rotation='vertical', fontsize = 13 )
+fig.text(0.5,-0.05, 'Magnetic field (T)', ha='center', fontsize = 13)
+
+gs = GridSpec(3, 3, figure=fig, height_ratios=[5, 1,1], width_ratios=[1, 1,1]) #, left=0.05, right=0.48, wspace=0.05)
+
+ax1 = fig.add_subplot(gs[0,0])
+ax1.plot(ene[:,0], ene_df.iloc[:,0:])
+ax1.set_title('Raw data, unsorted')
+
+ax2 = fig.add_subplot(gs[0,1])
+ax2.plot(expected_df.index, expected_df.iloc[:,0:])
+ax2.set_title('Polynomial fit ')
+ax2.tick_params(labelbottom=True, labelleft=False)
+
+ax3 = fig.add_subplot(gs[0,2])
+ax3.plot(final_df.index, final_df.iloc[:,0:])
+ax3.set_title('Raw data, sorted')
+ax3.tick_params(labelbottom=True, labelleft=False)
+
+ax4 = fig.add_subplot(gs[1, :])
+ax4.plot(expected_df.index, t[:,:])
+ax4.set_ylim([-0.25,0.25])
+ax4.set_title('Quality control of expected energies')
+ax4.tick_params(labelbottom=False, labelleft=True)
+
+ax5 = fig.add_subplot(gs[2, :])
+ax5.plot(expected_df.index, t[:,:])
+ax5.set_yscale('log')
+
+plt.savefig('plots/test_plots.png', dpi = 300, bbox_inches='tight')
+
 
 # In[]:
 #

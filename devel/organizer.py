@@ -9,13 +9,11 @@ Created on Mon Aug  5 12:29:04 2019
 import sys
 import os
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
-import math
-from itertools import combinations
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/')
 from parameters import *
 from datetime import datetime
+from matplotlib.gridspec import GridSpec
 
 
 
@@ -183,29 +181,64 @@ if __name__ == "__main__":
 
 
 # =============================================================================
-# Check control of the results
+#   Quality control of the results
 # =============================================================================
+    # Difference between expected vs. final order
+    t = np.empty([dims[0], dims[1]], dtype=float)
+    for i0 in range(dims[1]):
+        for i1 in range(dims[0]):
+            v = abs(float(expected_df.iloc[i1, i0]) - float(final_df.iloc[i1, i0]))
+            t[i1,i0] = v    
+    
     # Check if subdir_path exists and if its empty
     plotsdir_path = path + 'plots/'
     if not os.path.exists(plotsdir_path):
         os.makedirs(plotsdir_path)
     
     # Visual checking of results final vs. expected
-    fig, (ax1, ax2, ax3) = plt.subplots(1, 3, sharey = True)
-    ax1.plot(ene[:,0], ene_df.iloc[:,0:])
-    ax1.set_title('Energies')
-    ax2.plot(expected_df.index, expected_df.iloc[:,0:])
-    ax2.set_title('Expected energies')
-    ax3.plot(final_df.index, final_df.iloc[:,0:])
-    ax3.set_title('Final energies')
-    fig.text(0.5,0.01, 'Magnetic field (T)', ha='center', fontsize = 12)
+    fig = plt.figure(constrained_layout = True, figsize=(7, 5))
+    #fig.suptitle("Results summary")
+    fig.text(-0.05, 0.5, 'Energy (cm$^{-1}$)', va='center', rotation='vertical', fontsize = 13 )
+    fig.text(0.5,-0.05, 'Magnetic field (T)', ha='center', fontsize = 13)
     
-    plt.savefig('plots/summary_plots.png', dpi = 300)
+    gs = GridSpec(3, 3, figure=fig, height_ratios=[5, 1,1], width_ratios=[1, 1,1]) #, left=0.05, right=0.48, wspace=0.05)
+    
+    ax1 = fig.add_subplot(gs[0,0])
+    ax1.plot(ene[:,0], ene_df.iloc[:,0:])
+    ax1.set_title('Raw data, unsorted')
+    
+    ax2 = fig.add_subplot(gs[0,1])
+    ax2.plot(expected_df.index, expected_df.iloc[:,0:])
+    ax2.set_title('Polynomial fit ')
+    ax2.tick_params(labelbottom=True, labelleft=False)
+    
+    ax3 = fig.add_subplot(gs[0,2])
+    ax3.plot(final_df.index, final_df.iloc[:,0:])
+    ax3.set_title('Raw data, sorted')
+    ax3.tick_params(labelbottom=True, labelleft=False)
+    
+    ax4 = fig.add_subplot(gs[1, :])
+    ax4.plot(expected_df.index, t[:,:])
+    ax4.set_ylim([-0.25,0.25])
+    ax4.set_title('Quality control of expected energies')
+    ax4.tick_params(labelbottom=False, labelleft=True)
+    
+    ax5 = fig.add_subplot(gs[2, :])
+    ax5.plot(expected_df.index, t[:,:])
+    ax5.set_yscale('log')
+
+    plt.savefig('plots/summary_plots.png', dpi = 300, bbox_inches='tight')
+    
+
+
+# =============================================================================
+#   End of run
+# =============================================================================
     
     print "#################################################"
     print 'End of run'
     print "#################################################"
-    print "Check the quality control at /plots/summary_plot.png"
+    print "Check the quality control at /plots/summary_plots.png"
     print datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print 'Bye!'
     

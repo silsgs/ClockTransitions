@@ -10,42 +10,56 @@ import os
 import numpy as np
 import pandas as pd
 
-
     
 # =============================================================================
 # DEFINITIONS
 # Define here the relevant parameters of your system
 # =============================================================================
 
-
-
-
 # =============================================================================
-# Variables defined by the user manually
+# Variables defined by the user
 # =============================================================================
+
+#
+## Define variables
+#
 
 # Electronic and nuclear spin
 J = float(8)
 I = float(7.5)
-#J = float(raw_input('Valor de J: '))
-#I = float(raw_input('Valor de I: '))
+
+# Gyromagnetic parameter
 g_par = 0.0000
 g_per = 0.0000
 
-#A_par = 0
-#A_per = 0
+# Hyperfine coupling
+A_par = 0
+A_per = 0
 
-#n_levels = raw_input('How many n lower-energy levels are you interested in?:')
+# Number of levels of interest
 n_levels = 16
 
+# Thresholds of the energy gap and difference between slopes
+thrs_AE = float(0.5)
+thrs_pend = float(0.1)
 
 
 #
 ## Define variables
 #
-thrs_AE = float(0.5)
+
+#J = float(raw_input('Valor de J: '))
+#I = float(raw_input('Valor de I: '))
+
+#g_par = float(raw_input('Valor de g parallel: '))
+#g_per = float(raw_input('Valor de g perpendicular: '))
+
+#A_par = float(raw_input('Valor de A parallel: '))
+#A_per = float(raw_input('Valor de A perpendicular: '))
+
+#n_levels = raw_input('How many n lower-energy levels are you interested in?:')
+
 #thrs = float((raw_input('Valor max AE (thrs_AE): '))
-thrs_pend = float(0.1)
 #thrs_k1 = float((raw_input('Valor max d(pend) (thrs_pend): '))
 
 
@@ -54,7 +68,6 @@ thrs_pend = float(0.1)
 # =============================================================================
 # Variables not defined by the user
 # =============================================================================
-
 
 # Working path
 path = os.getcwd() + '/'
@@ -80,13 +93,13 @@ m_i = list(range(int(-(2*I)), int((2*I+2)), int(2)))
 
 
 
-
 ## Generate projections list from m_j and m_i
 projections_l = []
 for j in m_j:
     for i in m_i:
         proj = str(j) + '/' + str(i)
         projections_l.append(proj)
+
 
 # Loads new 'simpre.ene' file with energies of each level (quantum number) at diff H field
 with open(path + 'simpre.ene', 'r') as ene_f:
@@ -112,10 +125,6 @@ for i in list(range(n_levels)):
 
 
 
-
-
-
-   
 # Creating an empty DF for further lvl ordering
 H_values = ene_df.index
 expected_df = pd.DataFrame(index=H_values, columns=lvls_list)
