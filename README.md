@@ -36,7 +36,7 @@ To analyze the evolution of spin levels, or whatever you are studing as a functi
 
 Run the following commands at the same directory where the file *simpre.ene* and *simpre.out* are.
 
-(Optional) Plot your **SIMPRE**'s results. Running the following command will open a plot with the data contained in *simpre.ene* in interactive mode: 
+(Optional) Plot your **SIMPRE**'s results. Running the following command will open an interactive plot with the data contained in *simpre.ene*: 
 
 ``` python plotter.py  ```
 
