@@ -34,7 +34,6 @@ def expected_E(vec_z, H_v):
     k2 = vec_z[0]
     predicted_E = (k2 * (float(H_v)**2)) + (k1 * float(H_v)) + k0
     return predicted_E
-    #expec_out.write(str(v) + '\t')
     
 
 
@@ -86,8 +85,9 @@ if __name__ == "__main__":
         five_E = []
         d_poli = {}
         
-        poli_out.write(lvls_list[i0] + '  k2 k1 k0\n' )
-        
+        poli_out.write('{0:<2}{1}\n'.format('#', lvls_list[i0]))
+        poli_out.write('{0} {1:^10} {2:^10} {3:^10} {4:^10}\n'.format('#', 'H' , 'k2', 'k1', 'k0'))
+                       
         for i1 in range(dim[0]):
             
             if i1 == dim[0]-1:
@@ -120,7 +120,7 @@ if __name__ == "__main__":
                 p = np.poly1d(vec_poly)
                 d_poli[i1] = p
                 vec = ['{:.7f}'.format(i) for i in vec_poly]
-                poli_out.write('H: ' + str(H_value) + ' ' + vec[0] + ' ' + vec[1] + ' ' + vec[2] +'\n')
+                poli_out.write('{0:>10} {1:>10} {2:>10} {3:>10}\n'.format(str(H_value), vec[0], vec[1], vec[2]))
                 
                 # Calculates expected_v
                 v0 = str(round(float(expected_E(vec_poly, H_next)), 7))
@@ -140,7 +140,7 @@ if __name__ == "__main__":
                 
                 five_E.pop(0)
                 five_H.pop(0)
-        
+            
         poli_out.write('\n')
     
     # Write outputs

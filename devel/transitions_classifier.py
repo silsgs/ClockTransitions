@@ -54,7 +54,7 @@ def classify_crss(H_middle, a, b, index_a, index_b, pend_a, pend_b,AE, Apend, Ab
                 if pend_b < 0:
                     if Apend <= thrs_pend:
                         # Writes
-                        H_middle = '{:.7f}'.format(H_middle)
+                        H_middle = '{:.5f}'.format(H_middle)
                         a = '{:.7f}'.format(a)
                         b = '{:.7f}'.format(b)
                         pend_a = '{:.7f}'.format(pend_a)
@@ -63,18 +63,39 @@ def classify_crss(H_middle, a, b, index_a, index_b, pend_a, pend_b,AE, Apend, Ab
                         Apend = '{:.7f}'.format(Apend)
                         Abs_pend = '{:.7f}'.format(Abs_pend)
                 
-                        f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
-                                    pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+                        #f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
+                        #            pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
                         
-                        out_f1.write(H_middle + '     ' +  str(index_a) +'     ' +
-                                    str(index_b)+ '     ' + a + '     ' + b+ '     ' +
-                                    pend_a + '     ' + pend_b + '     ' + '     ' + AE+
-                                    '     ' + Apend + '\n')
+                        f_comb.write('{0:>10} {1:>15} {2:>15} {3:>15} {4:>15} {5:>15} {6:>15} {7:>15}\n'.format(
+                                H_middle,
+                                a,
+                                b,
+                                AE,
+                                pend_a,
+                                pend_b,
+                                Abs_pend,
+                                Apend))
+                        
+                        out_f1.write('{0:>10} {1:^10s} {2:^10s} {3:>15} {4:>15} {5:>15} {6:>15} {7:>15} {8:>15}\n'.format(
+                                H_middle,
+                                index_a,
+                                index_b,
+                                a,
+                                b,
+                                pend_a,
+                                pend_b,
+                                AE,
+                                Apend))
+                        
+                        #out_f1.write(H_middle + '     ' +  str(index_a) +'     ' +
+                        #            str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                        #            pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                        #            '     ' + Apend + '\n')
                 
                     elif Apend > 1:
                         if AE <= thrs_AE2:
                             # Writes
-                            H_middle = '{:.7f}'.format(H_middle)
+                            H_middle = '{:.5f}'.format(H_middle)
                             a = '{:.7f}'.format(a)
                             b = '{:.7f}'.format(b)
                             pend_a = '{:.7f}'.format(pend_a)
@@ -83,18 +104,39 @@ def classify_crss(H_middle, a, b, index_a, index_b, pend_a, pend_b,AE, Apend, Ab
                             Apend = '{:.7f}'.format(Apend)
                             Abs_pend = '{:.7f}'.format(Abs_pend)
                     
-                            out_f2.write(H_middle + '     ' +  str(index_a) +'     ' +
-                                        str(index_b)+ '     ' + a + '     ' + b+ '     ' +
-                                        pend_a + '     ' + pend_b + '     ' + '     ' + AE+
-                                        '     ' + Apend + '\n') 
-                            f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
-                                    pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+                            #out_f2.write(H_middle + '     ' +  str(index_a) +'     ' +
+                            #            str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                            #            pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                            #            '     ' + Apend + '\n') 
+                            #f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
+                            #        pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+                            f_comb.write('{0:>10} {1:>15} {2:>15} {3:>15} {4:>15} {5:>15} {6:>15} {7:>15}\n'.format(
+                                    H_middle,
+                                    a,
+                                    b,
+                                    AE,
+                                    pend_a,
+                                    pend_b,
+                                    Abs_pend,
+                                    Apend))
+                            
+                            out_f2.write('{0:>10} {1:^10s} {2:^10s} {3:>15} {4:>15} {5:>15} {6:>15} {7:>15} {8:>15}\n'.format(
+                                H_middle,
+                                index_a,
+                                index_b,
+                                a,
+                                b,
+                                pend_a,
+                                pend_b,
+                                AE,
+                                Apend))
+                            
             
             elif pend_a < 0:
                 if pend_b > 0:
                    if Apend <= thrs_pend:
                         # Writes
-                        H_middle = '{:.7f}'.format(H_middle)
+                        H_middle = '{:.5f}'.format(H_middle)
                         a = '{:.7f}'.format(a)
                         b = '{:.7f}'.format(b)
                         pend_a = '{:.7f}'.format(pend_a)
@@ -103,17 +145,37 @@ def classify_crss(H_middle, a, b, index_a, index_b, pend_a, pend_b,AE, Apend, Ab
                         Apend = '{:.7f}'.format(Apend)
                         Abs_pend = '{:.7f}'.format(Abs_pend)
                 
-                        out_f1.write(H_middle + '     ' +  str(index_a) +'     ' +
-                                    str(index_b)+ '     ' + a + '     ' + b+ '     ' +
-                                    pend_a + '     ' + pend_b + '     ' + '     ' + AE+
-                                    '     ' + Apend + '\n')
-                        f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
-                                    pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+                        #out_f1.write(H_middle + '     ' +  str(index_a) +'     ' +
+                        #            str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                        #            pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                        #            '     ' + Apend + '\n')
+                        #f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
+                        #            pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+                        f_comb.write('{0:>10} {1:>15} {2:>15} {3:>15} {4:>15} {5:>15} {6:>15} {7:>15}\n'.format(
+                                H_middle,
+                                a,
+                                b,
+                                AE,
+                                pend_a,
+                                pend_b,
+                                Abs_pend,
+                                Apend))
+                        
+                        out_f1.write('{0:>10} {1:^10s} {2:^10s} {3:>15} {4:>15} {5:>15} {6:>15} {7:>15} {8:>15}\n'.format(
+                                H_middle,
+                                index_a,
+                                index_b,
+                                a,
+                                b,
+                                pend_a,
+                                pend_b,
+                                AE,
+                                Apend))
                 
                    elif Apend > 1:
                          if AE <= thrs_AE2:
                             # Writes
-                            H_middle = '{:.7f}'.format(H_middle)
+                            H_middle = '{:.5f}'.format(H_middle)
                             a = '{:.7f}'.format(a)
                             b = '{:.7f}'.format(b)
                             pend_a = '{:.7f}'.format(pend_a)
@@ -122,12 +184,34 @@ def classify_crss(H_middle, a, b, index_a, index_b, pend_a, pend_b,AE, Apend, Ab
                             Apend = '{:.7f}'.format(Apend)
                             Abs_pend = '{:.7f}'.format(Abs_pend)
                     
-                            out_f2.write(H_middle + '     ' +  str(index_a) +'     ' +
-                                        str(index_b)+ '     ' + a + '     ' + b+ '     ' +
-                                        pend_a + '     ' + pend_b + '     ' + '     ' + AE+
-                                        '     ' + Apend + '\n') 
-                            f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
-                                    pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+                            #out_f2.write(H_middle + '     ' +  str(index_a) +'     ' +
+                            #            str(index_b)+ '     ' + a + '     ' + b+ '     ' +
+                            #            pend_a + '     ' + pend_b + '     ' + '     ' + AE+
+                            #            '     ' + Apend + '\n') 
+                            #f_comb.write(H_middle + '     ' +  a + '     ' + b+ '     ' +AE+ '     '+
+                            #        pend_a + '     ' + pend_b + '     '  + Abs_pend + '     ' + Apend + '\n')
+                            f_comb.write('{0:>10} {1:>15} {2:>15} {3:>15} {4:>15} {5:>15} {6:>15} {7:>15}\n'.format(
+                                    H_middle,
+                                    a,
+                                    b,
+                                    AE,
+                                    pend_a,
+                                    pend_b,
+                                    Abs_pend,
+                                    Apend))
+                            
+                            out_f2.write('{0:>10} {1:^10s} {2:^10s} {3:>15} {4:>15} {5:>15} {6:>15} {7:>15} {8:>15}\n'.format(
+                                H_middle,
+                                index_a,
+                                index_b,
+                                a,
+                                b,
+                                pend_a,
+                                pend_b,
+                                AE,
+                                Apend))
+                            
+                            
         elif pend_a/pend_b > 0:
             print 'exotic crosses'
     f_comb.close()
@@ -205,8 +289,7 @@ if __name__ == "__main__":
     for line in poly_cont:
         c0 +=1
         if 'lvl_' in line:
-            indexes.append(int(c0)-1)
-    in_f.close()    
+            indexes.append(int(c0)-1)   
     
     # Extract poli data
     dic = { i: { H:[] for H in H_values } for i in lvls_list }
@@ -216,21 +299,26 @@ if __name__ == "__main__":
         index_lvl = int(i1+1)
         name_lvl = 'lvl_' + str(index_lvl)
         cont = extract_poly(i1, indexes, poly_cont)
+        cont = cont[1:]
         
         for i2 in range(len(cont)):
             H_value = H_values[i2+4]
             vec = cont[i2].split()
             if len(vec) > 1:
-                H = float(vec[1])
-                k0 = float(vec[4])
-                k1 = float(vec[3])
-                k2 = float(vec[2])
+                H = float(vec[0])
+                k0 = float(vec[3])
+                k1 = float(vec[2])
+                k2 = float(vec[1])
                 dic[name_lvl][H] = [k0, k1, k2] 
             else:
                 continue
             
 
-
+    #
+    ##
+    ### Main
+    ##
+    #
 
     # Load input file
     final_df = pd.read_csv(path + 'res/final.txt', sep='\t')
@@ -238,6 +326,29 @@ if __name__ == "__main__":
     # Open output files
     out_avoid = open('res/avoided_sum.txt', 'w')
     out_nonavoid = open('res/nonavoided_sum.txt', 'w')
+    
+    out_avoid.write('#{0:^10} {1:^10s} {2:^10s} {3:^15s} {4:^15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
+                    'H',
+                    'i',
+                    'j',
+                    'E_i',
+                    'E_j',
+                    'slope_i',
+                    'slope_j',
+                    'AE_ij',
+                    'Aslope_ij'))
+                        
+    
+    out_nonavoid.write('#{0:^10} {1:^10s} {2:^10s} {3:^15s} {4:^15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
+                    'H',
+                    'i',
+                    'j',
+                    'E_i',
+                    'E_j',
+                    'slope_i',
+                    'slope_j',
+                    'AE_ij',
+                    'Aslope_ij'))
     
     
     # Check if subdir_path exists and if its empty
@@ -257,7 +368,6 @@ if __name__ == "__main__":
     ### Main loop
     ##
     #
-    
     H_s = H_values.astype(str)
     dic_2 = { H: { i:[] for i in lvls_list } for H in H_values }
     
@@ -282,7 +392,7 @@ if __name__ == "__main__":
                 index_b = sEs[sEs == b].index[0]
                 
                 
-                # Output file
+                # Output file path
                 f_comb = subdir_path + 'comb_' + index_a + '_' + index_b + '.out'
                 print f_comb
                 
@@ -290,8 +400,19 @@ if __name__ == "__main__":
                 if not os.path.isfile(f_comb):
                     # Creates file
                     f = open(subdir_path + 'comb_' + index_a + '_' + index_b + '.out' , 'w+')
+                    
                     # Writes data in file
-                    f.write(u'#H   Ei   Ej   AEij   pendi   pendj   |pendi|-|pendj|   |pendi-pendj|\n')
+                    #f.write(u'#H   Ei   Ej   AEij   pendi   pendj   |pendi|-|pendj|   |pendi-pendj|\n')
+                    f.write('#{0:^10} {1:^15} {2:^15}  {3:^15}  {4:^15}  {5:^15}  {6:^15} {7:15}\n'.format(
+                                    'H',
+                                    'E_i',
+                                    'E_j',
+                                    'AE',
+                                    'slope_i',
+                                    'slope_j',
+                                    '|pendi|-|pendj|',
+                                    '|pendi-pendj|'))
+                    
                     f.close()
                 
                 
@@ -326,11 +447,22 @@ if __name__ == "__main__":
     res = open(path + 'res/results.out', 'w')
     
     # Write header res file
-    res.write('#Level_a     Level_b     Type_crossing     H_crossing     E_crossing1     E_crossing2     AE     Curvature1     Curvature2\n')
-    
+    #res.write('#Level_a     Level_b     Type_crossing     H_crossing     E_crossing1     E_crossing2     AE     Curvature1     Curvature2\n')
+    res.write('#{0:^10} {1:^10s} {2:^10s} {3:^15s} {4:^15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
+                    'i',
+                    'j',
+                    'Type',
+                    'H_cross',
+                    'E_cross1',
+                    'E_cross2',
+                    'AE_ij',
+                    'Curvature1',
+                    'Curvature2'))
+              
+              
     # Loop
     for f in ldir:
-        if not os.stat(subdir_path + f).st_size > 71:
+        if not os.stat(subdir_path + f).st_size > 128:
             os.remove(subdir_path+f)
         
         else:
@@ -401,8 +533,19 @@ if __name__ == "__main__":
                     E_cross = (k2_a * (H_cross**2)) + (k1_a * H_cross) + k0_a
                     # Writes output
                     H_cross = '{:.5f}'.format(H_cross)
-                    E_cross = '{:.5f}'.format(E_cross)
-                    res.write(a + '     '+ b + '     '+ type_cross + '     '+ str(H_cross) + '     '+ str(E_cross) + '     -     - \n' )
+                    E_cross = '{:.7f}'.format(E_cross)
+                    
+                    #res.write(a + '     '+ b + '     '+ type_cross + '     '+ str(H_cross) + '     '+ str(E_cross) + '     -     - \n' )
+                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:^15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
+                    a,
+                    b,
+                    type_cross,
+                    H_cross,
+                    E_cross,
+                    '-',
+                    '-',
+                    '-',
+                    '-'))
                     
                     
                 else:
@@ -414,16 +557,28 @@ if __name__ == "__main__":
                     E_cross1 = res_v[2]
                     E_cross2 = res_v[3]
                     AE = abs(E_cross1 - E_cross2)
-                    AE = '{:.5f}'.format(AE)
+                    AE = '{:.7f}'.format(AE)
                     H_cross = '{:.5f}'.format(H_cross)
-                    E_cross1 = '{:.5f}'.format(E_cross1)
-                    E_cross2 = '{:.5f}'.format(E_cross2)
+                    E_cross1 = '{:.7f}'.format(E_cross1)
+                    E_cross2 = '{:.7f}'.format(E_cross2)
                     curvature = calc_curvature(H_cross, k1_a, k1_b, k2_a, k2_b)
-                    curv1 = '{:.5f}'.format(curvature[0])
-                    curv2 = '{:.5f}'.format(curvature[1])
+                    curv1 = '{:.7f}'.format(curvature[0])
+                    curv2 = '{:.7f}'.format(curvature[1])
                     #curvature = '{:.5f}'.format(curvature)
-                    res.write(a + '     '+ b + '     '+ type_cross + '     '+ H_cross + '     '+
-                              E_cross1 + '     ' + E_cross2 + '     ' + AE +'     ' + curv1 +'     ' + curv2 +  '\n' )
+                    
+                    #res.write(a + '     '+ b + '     '+ type_cross + '     '+ H_cross + '     '+
+                    #          E_cross1 + '     ' + E_cross2 + '     ' + AE +'     ' + curv1 +'     ' + curv2 +  '\n' )
+                    
+                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:^15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
+                    a,
+                    b,
+                    type_cross,
+                    H_cross,
+                    E_cross1,
+                    E_cross2,
+                    AE,
+                    curv1,
+                    curv2))
                     
                     
             else: # a es linea curva
@@ -444,9 +599,21 @@ if __name__ == "__main__":
                     # Calculates E_cross
                     E_cross = (k2_a * (H_cross**2)) + (k1_a * H_cross) + k0_a
                     H_cross = '{:.5f}'.format(H_cross)
-                    E_cross = '{:.5f}'.format(E_cross)
+                    E_cross = '{:.7f}'.format(E_cross)
+                    
                     # Writes output
-                    res.write(a + '     '+ b + '     '+ type_cross + '     '+ str(H_cross) + '     '+ str(E_cross) + '     -     - \n' )
+                    #res.write(a + '     '+ b + '     '+ type_cross + '     '+ str(H_cross) + '     '+ str(E_cross) + '     -     - \n' )
+                    
+                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:^15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
+                    a,
+                    b,
+                    type_cross,
+                    H_cross,
+                    E_cross,
+                    '-',
+                    '-',
+                    '-',
+                    '-'))
                     
                 else:
                     # Avoided crossing
@@ -457,15 +624,27 @@ if __name__ == "__main__":
                     E_cross1 = res_v[2]
                     E_cross2 = res_v[3]
                     AE = abs(E_cross1 - E_cross2)
-                    AE = '{:.5f}'.format(AE)
+                    AE = '{:.7f}'.format(AE)
                     H_cross = '{:.5f}'.format(H_cross)
-                    E_cross1 = '{:.5f}'.format(E_cross1)
-                    E_cross2 = '{:.5f}'.format(E_cross2)
+                    E_cross1 = '{:.7f}'.format(E_cross1)
+                    E_cross2 = '{:.7f}'.format(E_cross2)
                     curvature = calc_curvature(H_cross, k1_a, k1_b, k2_a, k2_b)
                     curv1 = '{:.5f}'.format(curvature[0])
                     curv2 = '{:.5f}'.format(curvature[1])
-                    res.write(a + '     '+ b + '     '+ type_cross + '     '+ H_cross + '     '+
-                              E_cross1 + '     ' + E_cross2 + '     ' + AE + '     ' + curv1 +'     ' + curv2 +  '\n' )
+                    
+                    #res.write(a + '     '+ b + '     '+ type_cross + '     '+ H_cross + '     '+
+                    #          E_cross1 + '     ' + E_cross2 + '     ' + AE + '     ' + curv1 +'     ' + curv2 +  '\n' )
+                    
+                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:^15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
+                    a,
+                    b,
+                    type_cross,
+                    H_cross,
+                    E_cross1,
+                    E_cross2,
+                    AE,
+                    curv1,
+                    curv2))
                     
     
     res.close()

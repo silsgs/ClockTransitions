@@ -321,7 +321,6 @@ for j in m_j:
         projections_l.append(proj)
 
 
-
    
 # Creating an empty DF for further lvl ordering
 H_values = ene_df.index
@@ -337,7 +336,6 @@ for i in lvls_list:
         c+=1
         if c < 6 :
             order_df.loc[i2, i] = i.replace('lvl_' , '')
-
 
 
 ## First check
@@ -375,7 +373,9 @@ for i0 in range(dim[1]):
     five_E = []
     d_poli = {}
     
-    poli_out.write(lvls_list[i0] + '  k2 k1 k0\n' )
+    #poli_out.write('# ' + lvls_list[i0] + '  k2 k1 k0\n' )
+    poli_out.write('{0:<2}{1}\n'.format('#', lvls_list[i0]))
+    poli_out.write('{0} {1:^10} {2:^10} {3:^10} {4:^10}\n'.format('#', 'H' , 'k2', 'k1', 'k0'))
     
     for i1 in range(dim[0]):
         
@@ -409,7 +409,9 @@ for i0 in range(dim[1]):
             p = np.poly1d(vec_poly)
             d_poli[i1] = p
             vec = ['{:.7f}'.format(i) for i in vec_poly]
-            poli_out.write('H: ' + str(H_value) + ' ' + vec[0] + ' ' + vec[1] + ' ' + vec[2] +'\n')
+            
+            #poli_out.write('H: ' + str(H_value) + ' ' + vec[0] + ' ' + vec[1] + ' ' + vec[2] +'\n')
+            poli_out.write('{0:>10} {1:>10} {2:>10} {3:>10}\n'.format(str(H_value), vec[0], vec[1], vec[2]))
             
             # Calculates expected_v
             v0 = str(round(float(expected_E(vec_poly, H_next)), 7))
@@ -515,6 +517,8 @@ plt.savefig('plots/summary_plots.png', dpi = 300)
 # In[]:
 from matplotlib.gridspec import GridSpec
 
+
+
 # Visual checking of results final vs. expected
 fig = plt.figure(constrained_layout = True, figsize=(7, 5))
 #fig.suptitle("Results summary")
@@ -553,7 +557,7 @@ plt.savefig('plots/test_plots.png', dpi = 300, bbox_inches='tight')
 # In[]:
 #
 ##
-### Read amd parse poli.txt file
+### Read and parse poli.txt file
 ##
 #
 # Opens and reads
@@ -568,7 +572,6 @@ for line in poly_cont:
     c0 +=1
     if 'lvl_' in line:
         indexes.append(int(c0)-1)
-in_f.close()    
 
 # Extract poli data
 dic = { i: { H:[] for H in H_values } for i in lvls_list }
@@ -576,17 +579,19 @@ dic = { i: { H:[] for H in H_values } for i in lvls_list }
 # Fill dic with data
 for i1 in range(len(indexes)):
     index_lvl = int(i1+1)
+    #print index_lvl
     name_lvl = 'lvl_' + str(index_lvl)
     cont = extract_poly(i1, indexes, poly_cont)
-    
+    cont = cont[1:]
     for i2 in range(len(cont)):
         H_value = H_values[i2+4]
         vec = cont[i2].split()
+
         if len(vec) > 1:
-            H = float(vec[1])
-            k0 = float(vec[4])
-            k1 = float(vec[3])
-            k2 = float(vec[2])
+            H = float(vec[0])
+            k0 = float(vec[3])
+            k1 = float(vec[2])
+            k2 = float(vec[1])
             dic[name_lvl][H] = [k0, k1, k2] 
         else:
             continue
