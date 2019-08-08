@@ -536,7 +536,7 @@ if __name__ == "__main__":
                     E_cross = '{:.7f}'.format(E_cross)
                     
                     #res.write(a + '     '+ b + '     '+ type_cross + '     '+ str(H_cross) + '     '+ str(E_cross) + '     -     - \n' )
-                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:^15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
+                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:>15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
                     a,
                     b,
                     type_cross,
@@ -569,7 +569,7 @@ if __name__ == "__main__":
                     #res.write(a + '     '+ b + '     '+ type_cross + '     '+ H_cross + '     '+
                     #          E_cross1 + '     ' + E_cross2 + '     ' + AE +'     ' + curv1 +'     ' + curv2 +  '\n' )
                     
-                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:^15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
+                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:>15s} {5:>15s} {6:>15s} {7:>15s} {8:>15s}\n'.format(
                     a,
                     b,
                     type_cross,
@@ -604,7 +604,7 @@ if __name__ == "__main__":
                     # Writes output
                     #res.write(a + '     '+ b + '     '+ type_cross + '     '+ str(H_cross) + '     '+ str(E_cross) + '     -     - \n' )
                     
-                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:^15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
+                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:>15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
                     a,
                     b,
                     type_cross,
@@ -635,7 +635,7 @@ if __name__ == "__main__":
                     #res.write(a + '     '+ b + '     '+ type_cross + '     '+ H_cross + '     '+
                     #          E_cross1 + '     ' + E_cross2 + '     ' + AE + '     ' + curv1 +'     ' + curv2 +  '\n' )
                     
-                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:^15s} {5:^15s} {6:^15s} {7:^15s} {8:^15s}\n'.format(
+                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:>15s} {5:>15s} {6:>15s} {7:>15s} {8:>15s}\n'.format(
                     a,
                     b,
                     type_cross,
@@ -660,6 +660,6 @@ if __name__ == "__main__":
     print 'End of run'
     print "#################################################"
     print ''
-    print "Check you results at /res/ directory"
+    print "Check your results at /res/ directory"
     print datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print 'Bye!'
