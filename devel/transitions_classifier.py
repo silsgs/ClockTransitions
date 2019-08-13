@@ -635,7 +635,7 @@ if __name__ == "__main__":
                     #res.write(a + '     '+ b + '     '+ type_cross + '     '+ H_cross + '     '+
                     #          E_cross1 + '     ' + E_cross2 + '     ' + AE + '     ' + curv1 +'     ' + curv2 +  '\n' )
                     
-                    res.write('#{0:^10s} {1:^10s} {2:^10s} {3:^15s} {4:>15s} {5:>15s} {6:>15s} {7:>15s} {8:>15s}\n'.format(
+                    res.write('#{0:^10s} {1:^10s}  {2:^10s} {3:^15s} {4:>15s} {5:>15s} {6:>15s} {7:>15s} {8:>15s}\n'.format(
                     a,
                     b,
                     type_cross,
