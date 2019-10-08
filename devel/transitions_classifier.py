@@ -19,8 +19,6 @@ from datetime import datetime
 
 
 
-
-
 def extract_poly(i1, indexes, poly_cont):
     '''Parses poly.out file extracting all data from each level'''
     if int(i1)+1 == len(indexes):
@@ -239,7 +237,13 @@ def limits_nonavoided(k0_a, k0_b, k1_a, k1_b, k2_a, k2_b):
     b = float(k1_a - k1_b)
     c = float(k0_a - k0_b)
     sol = []
-     
+    
+    inner_calc = b**2 - 4*a*c
+    if inner_calc < 0:
+        s = float(9999.9)
+        sol.append(s)
+        return sol
+    
     if a != 0:
         x1 = (-b + math.sqrt(b**2 - 4*a*c)) / (2 * a)
         x2 = (-b - math.sqrt(b**2 - 4*a*c)) / (2 * a)
@@ -271,7 +275,6 @@ def calc_curvature(xmax, k1_a, k1_b, k2_a, k2_b):
 
 
 if __name__ == "__main__":
-
     
     #
     ##
@@ -472,28 +475,66 @@ if __name__ == "__main__":
             b = name[2]
             array = np.loadtxt(subdir_path+f, comments = '#')
             dim = np.shape(array)
-            H = array[:,0]
-            E_a = array[:,1] 
-            E_b = array[:,2]
-            AEab = array[:,3]
-            pend_a = array[:,4]
-            pend_b = array[:,5]
-            diff1 = array[:,6]
-            diff2 = array[:,7]
-            
-            sign_penda = np.sign(array[:,4])
-            sign_pendb = np.sign(array[:,5])
-            
-            signa = np.where(np.diff(np.sign(array[:,4])))[0]
-            signb = np.where(np.diff(np.sign(array[:,5])))[0]
-            
-            ordered_AE = np.sort(array[:,3])
-            minimAE = ordered_AE[0]
-            minimAE_2 = ordered_AE[1]
-            i1, j1 = np.where(array == minimAE)
-            i2, j2 = np.where(array == minimAE_2)
-            H_min = array[i1, 0]
-            H_min2 = array[i2, 0]
+
+            if len(dim) > 1:
+                H = array[:,0]
+                E_a = array[:,1] 
+                E_b = array[:,2]
+                AEab = array[:,3]
+                pend_a = array[:,4]
+                pend_b = array[:,5]
+                diff1 = array[:,6]
+                diff2 = array[:,7]
+                sign_penda = np.sign(array[:,4])
+                sign_pendb = np.sign(array[:,5])
+                
+                signa = np.where(np.diff(np.sign(array[:,4])))[0]
+                signb = np.where(np.diff(np.sign(array[:,5])))[0]
+                
+                ordered_AE = np.sort(array[:,3])
+                minimAE = ordered_AE[0]
+                minimAE_2 = ordered_AE[1]
+                i1, j1 = np.where(array == minimAE)
+                i2, j2 = np.where(array == minimAE_2)
+                H_min = array[i1, 0]
+                H_min2 = array[i2, 0]
+                
+            else:
+                H = array[0]
+                E_a = array[1] 
+                E_b = array[2]
+                AEab = array[3]
+                pend_a = array[4]
+                pend_b = array[5]
+                diff1 = array[6]
+                diff2 = array[7]
+                
+                sign_penda = np.sign(array[4])
+                sign_pendb = np.sign(array[5])
+                
+                #signa = np.where(np.diff(np.sign(array[:,4])))[0]
+                #signb = np.where(np.diff(np.sign(array[:,5])))[0]
+                
+                #ordered_AE = np.sort(array[:,3])
+                #minimAE = ordered_AE[0]
+                #minimAE_2 = ordered_AE[1]
+                #i1, j1 = np.where(array == minimAE)
+                #i2, j2 = np.where(array == minimAE_2)
+                #H_min = array[i1, 0]
+                #H_min2 = array[i2, 0]
+                
+                type_cross = 'n/a'
+                
+                #AE = abs(E_cross1 - E_cross2)
+                AE = '{:.5f}'.format(AEab)
+                H_cross = '{:.5f}'.format(H)
+                E_cross1 = '{:.5f}'.format(E_a)
+                E_cross2 = '{:.5f}'.format(E_b)
+                
+                res.write(a + '     '+ b + '     '+ type_cross + '     '+ H_cross + '     '+
+                              E_cross1 + '     ' + E_cross2 + '     ' + AE + '     -     - \n' )
+                continue
+     
             
             # Find polynomio for Hmin + 2 
             H_values = np.array(H_values)

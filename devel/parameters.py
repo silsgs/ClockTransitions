@@ -37,10 +37,10 @@ A_par = 0
 A_per = 0
 
 # Number of levels of interest
-n_levels = 16
+n_levels = 40
 
 # Thresholds of the energy gap and difference between slopes
-thrs_AE = float(0.5)
+thrs_AE = float(4.1)
 thrs_pend = float(0.1)
 
 
