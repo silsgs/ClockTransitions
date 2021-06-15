@@ -13,7 +13,8 @@ The motivation of this project comes from the idea of studying the robustness of
 ## Related Article
 
 This work has been published as a scientific article in Chemical Science. You can check it now under the following DOI:
-DOI: 10.1039/D0SC01187H
+
+[![DOI](https://pubs.rsc.org/en/content/articlelanding/2020/SC/D0SC01187H)](https://pubs.rsc.org/en/content/articlelanding/2020/SC/D0SC01187H)
 
 ## Requierements
 - python 2.7
