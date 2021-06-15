@@ -1,0 +1,1 @@
+#    H          i          j            E_i             E_j           slope_i         slope_j          AE_ij         Aslope_ij   

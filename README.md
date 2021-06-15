@@ -56,8 +56,8 @@ Run the following commands at the same directory where the file *simpre.ene* and
 ## About the program...
 Simplified workflows of the main two scripts:
 
-![organizer.py](organizer.py.png)
-![transitions_classifier_2.pdf](transitions_classifier_2.pdf)
+![organizer.py](organizer.png)
+![transitions_classifier.png](transitions_classifier.png)
 
 
 # FAQ 

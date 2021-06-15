@@ -91,8 +91,9 @@ if __name__ == "__main__":
         for i1 in range(dim[0]):
             
             if i1 == dim[0]-1:
-                print i1
-                print dim[0]
+                #print i1
+                #print dim[0]
+                print 'RUNNING'
                 continue
             
             # Valores de campo : actual y next
@@ -144,8 +145,8 @@ if __name__ == "__main__":
         poli_out.write('\n')
     
     # Write outputs
-    order_df.to_csv(path + 'res/order.txt', header = lvls_list, sep='\t', na_rep='na')
-    expected_df.to_csv(path + 'res/expected.txt', header = lvls_list, sep='\t', na_rep='na')
+    order_df.to_csv(path + 'res/order.txt', header = lvls_list, sep='\t', na_rep='na') #, float_format='%.7f' )
+    expected_df.to_csv(path + 'res/expected.txt', header = lvls_list, sep='\t', na_rep='na') #, float_format='%.7f' )
     poli_out.close()
     
     #
@@ -161,7 +162,7 @@ if __name__ == "__main__":
     
     #Creates the final_df array using the labels from order_df as a mask over ene_df
     df_final = np.arange(tsize).reshape(dims[0], dims[1])
-    df_final = np.array(df_final, dtype='float32')
+    df_final = np.array(df_final, dtype='float64')
     
     for i in range(dims[0]): # valores de H
         for j in range(dims[1]): # niveles
@@ -176,7 +177,7 @@ if __name__ == "__main__":
             
     
     # Writing outputs
-    final_df.to_csv(path + 'res/final.txt', header = lvls_list, sep='\t', na_rep='na', float_format='%.7f' )
+    final_df.to_csv(path + 'res/final.txt', header = lvls_list, sep='\t', na_rep='na')#, float_format='%.7f' )
 
 
 

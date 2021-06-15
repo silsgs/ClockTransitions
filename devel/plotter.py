@@ -16,7 +16,7 @@ path = os.getcwd() + '/'
 
 ene_f = path + "simpre.ene"
 ene = np.loadtxt(ene_f, dtype= float)
-
+print np.shape(ene)
 
 
 if __name__ == "__main__":
