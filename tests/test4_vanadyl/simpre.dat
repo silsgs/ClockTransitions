@@ -1,0 +1,11 @@
+1=Ce3+, 2=Pr3+, 3=Nd3+, 4=Pm3+, 5=Sm3+, 6=Tb3+, 7=Dy3+, 8=Ho3+, 9=Er3+, 10=Tm3+, 11=Yb3+(I=5/2), 12=Yb3+(I=1/2), 13=user, 14=user-quick
+
+ 11    !ion code (from 1 to 14, see above)
+  0    !number of effective charges  
+
+
+  1  7    2.00232   Gd(III)
+
+
+
+

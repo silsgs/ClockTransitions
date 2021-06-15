@@ -9,6 +9,7 @@ Created on Mon Aug  5 12:32:50 2019
 import os
 import numpy as np
 import pandas as pd
+import decimal
 
     
 # =============================================================================
@@ -24,6 +25,13 @@ import pandas as pd
 ## Define variables
 #
 
+# Number of levels of interest
+n_levels = 16
+
+# Thresholds of the energy gap and difference between slopes
+thrs_AE = float(0.5)
+thrs_pend = float(0.1)
+
 # Electronic and nuclear spin
 J = float(8)
 I = float(7.5)
@@ -35,32 +43,6 @@ g_per = 0.0000
 # Hyperfine coupling
 A_par = 0
 A_per = 0
-
-# Number of levels of interest
-n_levels = 40
-
-# Thresholds of the energy gap and difference between slopes
-thrs_AE = float(4.1)
-thrs_pend = float(0.1)
-
-
-#
-## Define variables
-#
-
-#J = float(raw_input('Valor de J: '))
-#I = float(raw_input('Valor de I: '))
-
-#g_par = float(raw_input('Valor de g parallel: '))
-#g_per = float(raw_input('Valor de g perpendicular: '))
-
-#A_par = float(raw_input('Valor de A parallel: '))
-#A_per = float(raw_input('Valor de A perpendicular: '))
-
-#n_levels = raw_input('How many n lower-energy levels are you interested in?:')
-
-#thrs = float((raw_input('Valor max AE (thrs_AE): '))
-#thrs_k1 = float((raw_input('Valor max d(pend) (thrs_pend): '))
 
 
 
@@ -126,7 +108,19 @@ for i in list(range(n_levels)):
 
 
 # Creating an empty DF for further lvl ordering
-H_values = ene_df.index
+H_values = ene[:,0]
+#print H_values
+# Finds decimal places of H_values
+mHdd = 1
+for i in range(len(H_values)):
+    d = str(H_values[i])
+    d = decimal.Decimal(d)
+    Hdd = abs(d.as_tuple().exponent)
+    if Hdd > mHdd:
+        mHdd = Hdd
+#print mHdd
+    
+
 expected_df = pd.DataFrame(index=H_values, columns=lvls_list)
 final_df = pd.DataFrame(index=H_values, columns=lvls_list)
 order_df = pd.DataFrame(index=H_values, columns=lvls_list)
@@ -144,6 +138,7 @@ for i in lvls_list:
 
 ## First check
 dim = ene_df.shape
+print dim
 if int(dim[1]) !=  len(lvls_list):
     print 'hay un problema de dimensiones'
 
