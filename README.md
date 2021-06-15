@@ -10,6 +10,10 @@ The motivation of this project comes from the idea of studying the robustness of
 
 * Rationalize the design of new molecules with better structural properties to enhance the robustness of the clock transitions. 
 
+## Related Article
+
+This work has been published as a scientific article in Chemical Science. You can check it now under the following DOI:
+DOI: 10.1039/D0SC01187H
 
 ## Requierements
 - python 2.7
@@ -57,7 +61,7 @@ Run the following commands at the same directory where the file *simpre.ene* and
 Simplified workflows of the main two scripts:
 
 ![organizer.py](organizer.png)
-![transitions_classifier.png](transitions_classifier.png)
+![transitions_calssifier.png](transitions_calssifier.png)
 
 
 # FAQ 
